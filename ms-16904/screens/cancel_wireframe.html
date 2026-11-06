@@ -2843,7 +2843,7 @@ body{background:#fff!important}#goods_list td,#goods_list th,.area_change_amount
 							</tbody>
 </table>
 </div>
-	<div class="area_change_amount" style="width:100%;"><p id="calculationNote" style="margin:10px 0;color:#6c7480;font-size:12px">배송 중량: 박스 0.5kg + 잔여 상품별 0.1kg · 0.5kg 초과~1.0kg 이하 배송비 20,000원 · 보험가입액 98,000원 구간 수수료 1,800원. 잔여 상품의 주문 당시 쿠폰 배분액을 세금 계산에 유지합니다.</p>
+	<div class="area_change_amount" style="width:100%;"><p id="calculationNote" style="margin:10px 0;color:#6c7480;font-size:12px">배송 중량: 박스 0.5kg + 잔여 상품별 0.1kg · 0.5kg 초과~1.0kg 이하 배송비 20,000원 · 보험가입액 98,000원 구간 수수료 1,800원. 주문금액 할인·쿠폰은 남은 상품금액 비율로 재분배한 뒤 관세·부가세와 차액을 재계산합니다.</p>
 	<div class="sys-messages-container">
 		<h5 style="margin-top:20px">
 				주문변경에 따른 내역
@@ -3104,7 +3104,13 @@ const PRODUCTS=[{id:'698',name:'쿠폰테스트1',price:27000,coupon:5000,duty:2
 const BEFORE={total:54000,duty:6580,vat:7238,delivery:21800,coupon:10000,paid:79618};
 const SHIPPING_TABLE=[{maxWeight:.5,price:10000},{maxWeight:1,price:20000},{maxWeight:1.5,price:30000},{maxWeight:2,price:40000}];
 const INSURANCE_TABLE=[{insured:98000,fee:1800},{insured:196000,fee:2250},{insured:294000,fee:2700},{insured:392000,fee:3150}];
-function calculateCancellation(cancelled){const remaining=PRODUCTS.filter(p=>!cancelled.has(p.id));const total=remaining.reduce((s,p)=>s+p.price,0),taxable=remaining.reduce((s,p)=>s+p.price-p.coupon,0);const weight=remaining.length?Number((.5+remaining.length*.1).toFixed(3)):0;const shipping=remaining.length?SHIPPING_TABLE.find(t=>weight<=t.maxWeight).price:0;/* 이번 주문의 보험가입액 구간은 98,000원. 부분취소 후에도 같은 구간에 해당. */const insurance=remaining.length?INSURANCE_TABLE[0].fee:0;const delivery=shipping+insurance;const duty=remaining.reduce((s,p)=>s+p.duty,0)+Math.round(delivery*.1);const vat=Math.round((taxable+delivery+duty)*.1);const coupon=remaining.length?BEFORE.coupon:0;const orderValue=total+delivery+duty+vat-coupon;return {total,taxable,weight,shipping,delivery,duty,vat,coupon,orderValue,margin:orderValue-BEFORE.paid,insurance}}
+function redistributeOrderCoupon(products,amount){
+ const total=products.reduce((sum,p)=>sum+p.price,0),coupon=Math.min(Math.max(0,amount),total);
+ const allocations=products.map(p=>({...p,coupon:total?Math.round(coupon*p.price/total):0}));
+ if(allocations.length){const largest=allocations.reduce((a,b)=>a.price>=b.price?a:b);largest.coupon+=coupon-allocations.reduce((sum,p)=>sum+p.coupon,0)}
+ return allocations.map(p=>({...p,duty:Math.round(Math.max(0,p.price-p.coupon)*.1)}));
+}
+function calculateCancellation(cancelled){const remaining=cancelled.size?redistributeOrderCoupon(PRODUCTS.filter(p=>!cancelled.has(p.id)),BEFORE.coupon):PRODUCTS.map(p=>({...p}));const total=remaining.reduce((s,p)=>s+p.price,0),taxable=remaining.reduce((s,p)=>s+p.price-p.coupon,0);const weight=remaining.length?Number((.5+remaining.length*.1).toFixed(3)):0;const shipping=remaining.length?SHIPPING_TABLE.find(t=>weight<=t.maxWeight).price:0;/* 이번 주문의 보험가입액 구간은 98,000원. 부분취소 후에도 같은 구간에 해당. */const insurance=remaining.length?INSURANCE_TABLE[0].fee:0;const delivery=shipping+insurance;const duty=remaining.reduce((s,p)=>s+p.duty,0)+Math.round(delivery*.1);const vat=Math.round((taxable+delivery+duty)*.1);const coupon=Math.min(BEFORE.coupon,total);const orderValue=total+delivery+duty+vat-coupon;return {total,taxable,weight,shipping,delivery,duty,vat,coupon,orderValue,margin:orderValue-BEFORE.paid,insurance,products:remaining}}
 
 let followupSnapshot=null;try{followupSnapshot=JSON.parse(new URLSearchParams(location.search).get('snapshot')||'null')}catch{}if(followupSnapshot){PRODUCTS.splice(0,PRODUCTS.length,...followupSnapshot.products);Object.assign(BEFORE,followupSnapshot.before);const template=document.getElementById('goods_698'),controls=document.getElementById('goods_698_1');if(PRODUCTS.some(p=>p.id==='701')){const row=template.cloneNode(true);row.id='goods_701';row.setAttribute('od_idx','701');row.setAttribute('seq_group','701');row.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));const editor=controls.cloneNode(true);editor.id='goods_701_1';editor.innerHTML=editor.innerHTML.replaceAll('698','701');controls.after(row);row.after(editor)}for(const id of ['698','699','700'])if(!PRODUCTS.some(p=>p.id===id)){document.getElementById('goods_'+id).style.display='none';document.getElementById('goods_'+id+'_1').style.display='none'}}
 const $=id=>document.getElementById(id),format=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});let cancelled=new Set(),stocks={},applied=false;
