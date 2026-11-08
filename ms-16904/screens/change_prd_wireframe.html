@@ -2882,7 +2882,7 @@ body{background:#fff!important}
 							</tbody>
 </table>
 </div>
-	<div class="area_change_amount" style="width:100%;"><p style="margin:8px 0;color:#6c7480;font-size:12px;line-height:1.6">교환 시점 설정: 기존과 동일 · 품목별 관세 10%, 배송비 관세 10%, 부가세 10% · 박스 0.5kg + 상품별 0.1kg. 교환상품에 기존 할인·쿠폰을 승계하지 않습니다.</p>
+	<div class="area_change_amount" style="width:100%;"><p style="margin:8px 0;color:#6c7480;font-size:12px;line-height:1.6">교환 시점 설정: 기존과 동일 · 품목별 관세 10%, 배송비 관세 10%, 부가세 10% · 박스 0.5kg + 상품별 0.1kg. 기존 상품가 할인은 교환상품에 승계하지 않습니다. 주문금액 할인·쿠폰은 교환 후 주문에 포함된 상품금액 비율로 다시 배분합니다.</p>
 	<div class="sys-messages-container">
 		<h5 style="margin-top:20px">
 				주문변경에 따른 내역
@@ -3105,7 +3105,26 @@ const PRODUCTS=[{id:'698',name:'쿠폰테스트1',price:27000,coupon:5000,duty:2
 const EXCHANGE={name:'상품쿠폰 테스트2',price:20000,weight:.1};
 const BEFORE={total:54000,duty:6580,vat:7238,delivery:21800,coupon:10000,paid:79618};
 const SHIPPING_TABLE=[{maxWeight:.5,price:10000},{maxWeight:1,price:20000},{maxWeight:1.5,price:30000},{maxWeight:2,price:40000}];
-function calculateExchange(itemId){const remaining=PRODUCTS.filter(p=>p.id!==itemId);const weight=Number((.5+remaining.length*.1+EXCHANGE.weight).toFixed(3));const shipping=SHIPPING_TABLE.find(t=>weight<=t.maxWeight).price,insurance=1800,delivery=shipping+insurance;const total=remaining.reduce((s,p)=>s+p.price,EXCHANGE.price),taxable=remaining.reduce((s,p)=>s+p.price-p.coupon,EXCHANGE.price);const duty=remaining.reduce((s,p)=>s+p.duty,Math.round(EXCHANGE.price*.1))+Math.round(delivery*.1);const vat=Math.round((taxable+delivery+duty)*.1);const orderValue=total+delivery+duty+vat-BEFORE.coupon;return {total,taxable,weight,shipping,insurance,delivery,duty,vat,coupon:BEFORE.coupon,orderValue,margin:orderValue-BEFORE.paid}}
+function redistributeOrderCoupon(products,amount){
+ const total=products.reduce((sum,p)=>sum+p.price,0),coupon=Math.min(Math.max(0,amount),total);
+ const allocations=products.map(p=>({...p,coupon:total?Math.round(coupon*p.price/total):0}));
+ if(allocations.length){const largest=allocations.reduce((a,b)=>a.price>=b.price?a:b);largest.coupon+=coupon-allocations.reduce((sum,p)=>sum+p.coupon,0)}
+ return allocations.map(p=>({...p,duty:Math.round(Math.max(0,p.price-p.coupon)*.1)}));
+}
+function calculateExchange(itemId){
+ const remaining=PRODUCTS.filter(product=>product.id!==itemId);
+ const products=redistributeOrderCoupon([...remaining,{...EXCHANGE,id:'701'}],BEFORE.coupon);
+ const weight=Number((.5+remaining.length*.1+EXCHANGE.weight).toFixed(3));
+ const shipping=SHIPPING_TABLE.find(t=>weight<=t.maxWeight).price;
+ const insurance=1800,delivery=shipping+insurance;
+ const total=products.reduce((sum,product)=>sum+product.price,0);
+ const coupon=products.reduce((sum,product)=>sum+product.coupon,0);
+ const taxable=total-coupon;
+ const duty=products.reduce((sum,product)=>sum+product.duty,0)+Math.round(delivery*.1);
+ const vat=Math.round((taxable+delivery+duty)*.1);
+ const orderValue=total+delivery+duty+vat-coupon;
+ return {total,taxable,weight,shipping,insurance,delivery,duty,vat,coupon,orderValue,margin:orderValue-BEFORE.paid,products};
+}
 
 let followupSnapshot=null;try{followupSnapshot=JSON.parse(new URLSearchParams(location.search).get('snapshot')||'null')}catch{}if(followupSnapshot){PRODUCTS.splice(0,PRODUCTS.length,...followupSnapshot.products);Object.assign(BEFORE,followupSnapshot.before);const template=document.getElementById('goods_698'),controls=document.getElementById('goods_698_1');if(PRODUCTS.some(p=>p.id==='701')){const row=template.cloneNode(true);row.id='goods_701';row.setAttribute('od_idx','701');row.setAttribute('seq_group','701');row.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));const editor=controls.cloneNode(true);editor.id='goods_701_1';editor.innerHTML=editor.innerHTML.replaceAll('698','701');controls.after(row);row.after(editor)}for(const id of ['698','699','700'])if(!PRODUCTS.some(p=>p.id===id)){document.getElementById('goods_'+id).style.display='none';document.getElementById('goods_'+id+'_1').style.display='none'}}
 const $=id=>document.getElementById(id),format=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});const exchangeParams=new URLSearchParams(location.search),isShippedExchange=exchangeParams.get('mode')==='changewait';let sourceStates={};try{sourceStates=JSON.parse(exchangeParams.get('states')||'{}')}catch{}const requested=exchangeParams.get('item'),itemId=PRODUCTS.some(p=>p.id===requested)?requested:'699';let applied=false;
