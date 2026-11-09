@@ -8,11 +8,11 @@
     :root{font-family:Arial,"맑은 고딕",sans-serif;color:#202632;background:#f6f7f9;font-synthesis:none}
     *{box-sizing:border-box}body{margin:0}button,a{font:inherit}button{cursor:pointer}a{color:#245ac3;text-decoration:none}a:hover{text-decoration:underline}
     main{max-width:1120px;margin:64px auto;padding:0 24px}h1{font-size:28px;letter-spacing:-1px;margin:0 0 10px}header p{margin:0;color:#727b8b;font-size:14px;line-height:1.6}
-    .filters{display:flex;gap:8px;margin:28px 0 16px}.filters button{border:1px solid #dce1e9;border-radius:6px;padding:9px 18px;background:white;color:#606b7d;font-size:14px}.filters button[aria-pressed="true"]{background:#243c67;color:white;border-color:#243c67}.filters button:focus-visible,.project-toggle:focus-visible,a:focus-visible{outline:3px solid #92b8ff;outline-offset:3px}
+    .filters{display:flex;gap:8px;margin:28px 0 16px}.filters button{border:1px solid #dce1e9;border-radius:6px;padding:9px 18px;background:white;color:#606b7d;font-size:14px}.filters button[aria-pressed="true"]{background:#243c67;color:white;border-color:#243c67}.filters button:focus-visible,.project-link:focus-visible,a:focus-visible{outline:3px solid #92b8ff;outline-offset:3px}
     .table-wrap{border:1px solid #dfe4ec;border-radius:10px;overflow:hidden;background:#fff}table{border-collapse:collapse;width:100%;table-layout:fixed}th{text-align:left;background:#f0f3f7;padding:15px 22px;font-size:13px;color:#667387;font-weight:600}th:first-child{width:130px}td{padding:22px;border-top:1px solid #e7ebf1;vertical-align:middle}.category{display:inline-block;background:#edf3ff;color:#325fbd;border-radius:5px;padding:5px 10px;font-size:12px;font-weight:bold;white-space:nowrap}
-    .project-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:0;text-align:left;border:0;background:none;color:#202c40;font-weight:600;font-size:15px;line-height:1.7}.project-toggle:hover{color:#245ac3}.chevron{font-size:18px;transition:transform .15s;flex:none;color:#7a879a}.project-toggle[aria-expanded="true"] .chevron{transform:rotate(180deg)}
-    .screens-cell{padding:24px 22px 28px;background:#fbfcfe}h2{font-size:14px;margin:0 0 14px;color:#536176}.screen-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;list-style:none;margin:0;padding:0}.screen-list li{min-width:0}.screen-list a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 16px;border:1px solid #e0e6ef;border-radius:6px;background:white;font-size:14px;line-height:1.5}.screen-list a:hover{border-color:#8eaddf;background:#f5f8ff;text-decoration:none}.screen-kind{font-size:11px;color:#8590a1;white-space:nowrap}.screen-group+.screen-group{margin-top:24px}.empty{padding:46px 24px;text-align:center;color:#7b8595;font-size:14px}[hidden]{display:none!important}.footer{font-size:12px;color:#8992a1;margin-top:16px}
-    @media(max-width:640px){main{margin:32px auto;padding:0 16px}h1{font-size:23px}th,td{padding:16px 12px}th:first-child{width:88px}.project-toggle{font-size:14px}.screens-cell{padding:20px 12px}.screen-list{grid-template-columns:1fr}.filters button{padding:8px 14px}.category{padding:4px 7px}}
+    .project-link{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;padding:0;text-align:left;border:0;background:none;color:#202c40;font-weight:600;font-size:15px;line-height:1.7}.project-link:hover{color:#245ac3}.chevron{font-size:18px;flex:none;color:#7a879a}
+    .empty{padding:46px 24px;text-align:center;color:#7b8595;font-size:14px}[hidden]{display:none!important}
+    @media(max-width:640px){main{margin:32px auto;padding:0 16px}h1{font-size:23px}th,td{padding:16px 12px}th:first-child{width:88px}.project-link{font-size:14px}.filters button{padding:8px 14px}.category{padding:4px 7px}}
   </style>
 </head>
 <body>
@@ -29,57 +29,34 @@
       <tbody>
         <tr id="project-ms-16904" data-category="global">
           <td><span class="category">글로벌</span></td>
-          <td><button type="button" class="project-toggle" aria-expanded="false" aria-controls="screens-ms-16904"><span>[MS-16904] 배송사·국가별 관부가세 징수·계산 개선</span><span class="chevron" aria-hidden="true">⌄</span></button></td>
-        </tr>
-        <tr id="screens-ms-16904" hidden>
-          <td colspan="2" class="screens-cell">
-            <section class="screen-group" aria-label="관련문서">
-              <h2>관련문서</h2>
-              <ul class="screen-list">
-                <li><a href="https://cowave-ms.atlassian.net/wiki/spaces/PSK/pages/162168953/MS-16904" target="_blank" rel="noopener"><span>사양정의서</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-                <li><a href="https://cowave-ms.atlassian.net/wiki/spaces/PSK/pages/169804079" target="_blank" rel="noopener"><span>기획문서요약본</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-                <li><a href="https://cowave-ms.atlassian.net/wiki/spaces/PSK/pages/162856963" target="_blank" rel="noopener"><span>정책서</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-                <li><a href="https://cowave-ms.atlassian.net/wiki/spaces/PSK/pages/167968793" target="_blank" rel="noopener"><span>화면정의서</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-              </ul>
-            </section>
-            <section class="screen-group" aria-label="관리자">
-              <h2>관리자</h2>
-              <ul class="screen-list">
-                <li><a href="./ms-16904/orderregulation_wireframe.html" target="_blank" rel="noopener"><span>관세설정</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-                <li><a href="./ms-16904/combine_wireframe.html" target="_blank" rel="noopener"><span>통합주문리스트</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-              </ul>
-            </section>
-            <section class="screen-group" aria-label="고객화면">
-              <h2>고객화면</h2>
-              <ul class="screen-list">
-                <li><a href="./ms-16904/pgform_wireframe.html" target="_blank" rel="noopener"><span>PC 주문서</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-                <li><a href="./ms-16904/screens/pgform_M_wireframe.html" target="_blank" rel="noopener"><span>모바일 주문서</span><span class="screen-kind" aria-hidden="true">↗</span></a></li>
-              </ul>
-            </section>
-          </td>
+          <td><a class="project-link" href="./ms-16904/index.html" data-local-project="./글로벌/[MS-16904] 배송사·국가별 관부가세 징수·계산 개선/와이어프레임/ms-16904/index.html"><span>[MS-16904] 배송사·국가별 관부가세 징수·계산 개선</span><span class="chevron" aria-hidden="true">›</span></a></td>
         </tr>
         <tr id="empty-projects" hidden><td colspan="2" class="empty">등록된 메이크샵 프로젝트가 없습니다.</td></tr>
       </tbody>
     </table>
   </div>
-  <p class="footer">각 화면은 새 탭에서 열립니다.</p>
 </main>
 <script>
-  const toggle=document.querySelector('.project-toggle');
-  const project=document.getElementById('project-ms-16904');
-  const screens=document.getElementById('screens-ms-16904');
+  const projects=[...document.querySelectorAll('[data-category]')];
+  const filters=[...document.querySelectorAll('[data-filter]')];
   const empty=document.getElementById('empty-projects');
-  let expanded=false;
-  toggle.addEventListener('click',()=>{expanded=!expanded;toggle.setAttribute('aria-expanded',String(expanded));screens.hidden=!expanded});
-  document.querySelectorAll('[data-filter]').forEach(button=>button.addEventListener('click',()=>{
-    document.querySelectorAll('[data-filter]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
-    const visible=button.dataset.filter!=='makeshop';
-    project.hidden=!visible;screens.hidden=!visible||!expanded;empty.hidden=visible;
+
+  filters.forEach(button=>button.addEventListener('click',()=>{
+    filters.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+    const category=button.dataset.filter;
+    projects.forEach(project=>{
+      project.hidden=category!=='all'&&project.dataset.category!==category;
+    });
+    empty.hidden=projects.some(project=>!project.hidden);
+    empty.cells[0].textContent=category==='all'
+      ? '등록된 프로젝트가 없습니다.'
+      : '등록된 '+button.textContent+' 프로젝트가 없습니다.';
   }));
-  // The hosted copy uses repository-relative paths; local preview uses the existing project folder.
+
   if(location.protocol==='file:'){
-    const localProject='./글로벌/[MS-16904] 배송사·국가별 관부가세 징수·계산 개선/와이어프레임/ms-16904/';
-    document.querySelectorAll('a[href^="./ms-16904/"]').forEach(link=>{link.href=localProject+link.getAttribute('href').slice('./ms-16904/'.length)});
+    document.querySelectorAll('[data-local-project]').forEach(link=>{
+      link.href=link.dataset.localProject;
+    });
   }
 </script>
 </body>
