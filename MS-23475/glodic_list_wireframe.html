@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://makeglob.makeshop.co.kr/Admin/server/glodic_list -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+
+	<meta http-equiv="Imagetoolbar" content="no">
+	<title>Make Glob :: Back Office</title>
+
+
+	<style type="text/css">
+		#receiveList .memo { margin-top: 35px; }
+		#receiveList .memo .tbl { margin-top: 10px; border: 1px solid #e6e6e6; }
+		#receiveList .memo th,
+		#receiveList .memo td { padding: 8px 0 7px; }
+		#receiveList .memo th { color: #333; letter-spacing: -1px; border-right: 1px solid #e6e6e6; background-color: #f4f5f9; }
+		#receiveList .memo .txt-l { padding: 0 10px; }
+		#receiveList .memo .txt-r { padding-right: 10px; }
+		#receiveList .memo .btn-mod { display: inline-block; vertical-align: middle; font-size: 0; line-height: 0; border: 1px solid #4584eb;}
+		#receiveList .memo .btn-mod button { height: 20px; padding: 0 5px; line-height: 20px; font-size: 11px; letter-spacing: -1px; border: 0; background: #f5f8fa; }
+		#receiveList .list-w { margin-top: 40px; }
+		#receiveList .list-w .hd { zoom: 1; overflow: hidden; min-height: 31px; _height: 31px; }
+		#receiveList .list-w .btit { float: left; }
+		#receiveList .list-w .in { float: right; }
+		#receiveList .list-w .in p,
+		#receiveList .list-w .in dl,
+		#receiveList .list-w .in dt,
+		#receiveList .list-w .in dd { display: inline; vertical-align: middle; }
+		#receiveList .list-w .in p { margin-right: 8px; }
+		#receiveList .list-w .in p strong { color: #ff2d18; }
+		#receiveList .list-w .in p em { font-weight: bold; }
+		#receiveList .list-w .in dd strong { font-size: 18px; font-family: Arial; color: #ff2d18; font-weight: bold; }
+		#receiveList .list-w .tab-w { zoom: 1; overflow: hidden; border-bottom: 4px solid #6086e8	; }
+		#receiveList .list-w .tab { float: left; }
+		#receiveList .list-w .tab a { float: left; width: 128px; height: 31px; line-height: 31px; text-align: center; color: #999; border: 1px solid #cccccc; border-bottom: 0; }
+		#receiveList .list-w .tab a.now { color: #fff; font-weight: bold; letter-spacing: -1px; border-color: #6086e8; background-color: #7c9cef; }
+		#receiveList .list-w .ctrl { float: right; padding-top: 2px; padding-bottom: 1px; font-size: 0; line-height: 0; }
+		#receiveList .list-w .ctrl select { margin-left: 5px; }
+		#receiveList .list-w .ctrl .btn { display: inline-block; vertical-align: middle; margin-right: 5px; font-size: 0; line-height: 0; }
+		#receiveList .list-w .ctrl button { height: 20px; padding: 0 5px; line-height: 20px; font-size: 11px; letter-spacing: -1px; vertical-align: top; border: 0; }
+		#receiveList .list-w .ctrl .btn-lg { border: 1px solid #c1c6ca; }
+		#receiveList .list-w .ctrl .btn-lg button { background: #ecf1f5; }
+		#receiveList .list-w .ctrl .btn-lb { border: 1px solid #b1c9d9; }
+		#receiveList .list-w .ctrl .btn-lb button { background: #e3eef6; }
+		#receiveList .list-w .ls-ctrl { zoom: 1; overflow: hidden; margin-top: 30px; vertical-}
+		#receiveList .list-w .ls-ctrl .btn { overflow: hidden; display: inline-block; float: left; margin-right: 5px; font-size: 0; line-height: 0; }
+		#receiveList .list-w .ls-ctrl button { float: left; height: 33px; padding: 0 13px; line-height: 33px; font-weight: bold; letter-spacing: -1px; vertical-align: top; border: 0; }
+		#receiveList .list-w .ls-ctrl .btn-g { border: 1px solid #666e85; }
+		#receiveList .list-w .ls-ctrl .btn-g button { color: #fff; background:#838ba2 url("assets/backoffice/h33_gra_g.gif") repeat-x 0 0; }
+		#receiveList .list-w .ls-ctrl .btn-lg { border: 1px solid #c1c6ca; }
+		#receiveList .list-w .ls-ctrl .btn-lg button { color: #666; background:#ecf1f5 url("assets/backoffice/h33_gra_lg.gif") repeat-x 0 0; }
+		#receiveList .list-w .ls-ctrl .lc,
+		#receiveList .list-w .ls-ctrl .lc dt,
+		#receiveList .list-w .ls-ctrl .lc dd { float: left; }
+		#receiveList .list-w .ls-ctrl .lc dt { height: 35px; margin-right: 10px; line-height: 35px; }
+		#receiveList .list-w .ls-ctrl .rc { float: right; }
+	</style>
+
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data:; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; form-action 'none'; object-src 'none'">
+<style>
+/*
+	- Author :
+	- Description : rest, common
+*/
+/*
+========================================================================
+RESET
+========================================================================
+*/
+/* global reset */
+html { overflow-y: scroll; }
+html, body { height: 100%; }
+html, body, pre,
+h1, h2, h3, h4, h5, h6,
+dl, dt, dd, ul, li, ol,
+th, td, p, blockquote,
+form, fieldset, legend,
+input, select, textarea, button {
+	margin: 0;
+	padding: 0;
+}
+body, button { color: #666; font-size: 12px; line-height: 1.5; font-family: sans-serif, Dotum, AppleGothic, Tahoma, Geneva; }
+h1, h2, h3, h4, h5, h6 { font-weight: normal; }
+img, fieldset { border: 0 none; }
+img { vertical-align: top; max-width: 100%; }
+li { list-style: none; }
+hr, caption, legend { display: none; }
+a { color: #666; text-decoration: none; }
+button { overflow: visible; cursor: pointer; }
+address, em { font-style: normal; }
+button, input, select, textarea, a { vertical-align: middle; }
+input, select, textarea { font-size: 12px; color: #444; font-family: sans-serif, Dotum, AppleGothic, Tahoma, Geneva; }
+select { position: relative; height: 18px; }
+table { width: 100%; border-collapse: collapse; border-spacing: 0; table-layout: fixed; word-wrap: break-word; word-break: keep-all; }
+table img { vertical-align: middle; }
+ins { text-decoration: none; }
+a { outline: none; }
+a:active { selector-dummy:expression(this.hideFocus = true); }
+/*
+========================================================================
+COMMON CLASS
+========================================================================
+*/
+/* image replace, hidden text */
+.ir *,
+.blind { z-index:-1; position: absolute; display: block; left: 0; top: 0; overflow: hidden; display: block; font-size: 0; line-height: 0; visibility: hidden; width: 0; height: 0; text-indent: -9999px; }
+/* form */
+.chk-rdo { width: 14px; height: 14px; }
+.txt-r { text-align: right; }
+.txt-c { text-align: center; }
+.txt-l { text-align: left; }
+.txt-input { height: 18px; line-height: 18px; }
+/* label */
+.label-r10 label { margin-right: 10px; }
+.label-r20 label { margin-right: 20px; }
+.label-r30 label { margin-right: 30px; }
+.label-r10 label.last,
+.label-r20 label.last,
+.label-r30 label.last { margin-right: 0; }
+/* paging */
+.paging { padding-top: 23px; text-align: center; font-size: 0; line-height: 0; }
+.paging a { display: inline-block; height: 22px; padding: 0 7px; font-size: 18px; line-height: 22px; font-family: Arial; color: #999; font-weight: bold; }
+.paging a:hover { text-decoration: underline; }
+.paging a.now { color: #000; }
+.paging a.now:hover { text-decoration: none; }
+.paging .btn { height: 23px; vertical-align: top; *margin-right: -1px; padding: 0; font-size: 0; line-height: 0; background: url("assets/backoffice/paging.gif") no-repeat; }
+.paging .btn * { visibility: hidden; }
+.paging .btn-first { width: 22px; background-position: 0px 0px; }
+.paging .btn-prev { width: 23px; margin-right: 9px; background-position: -22px 0px; }
+.paging .btn-next { width: 23px; margin-left: 9px; background-position: -44px 0px; }
+.paging .btn-last { width: 22px; *margin-right: auto; background-position: -67px 0px; }
+.paging .pc { display: inline-block; background: url("assets/backoffice/bg_paging.gif") repeat-x 0 50%; }
+/* table type */
+.tbl-ftype1 th,
+.tbl-ftype1 td { padding: 8px 0 7px; border: 1px solid #e6e6e6; }
+.tbl-ftype1 th { color: #333; letter-spacing: -1px; background-color: #f4f5f9; }
+.tbl-ftype1 .txt-l { padding: 0 10px; }
+.tbl-ltype1 th,
+.tbl-ltype1 td { padding: 8px 0 7px; color: #333; }
+.tbl-ltype1 th { color: #333; font-size: 11px; font-weight: bold; letter-spacing: -1px; border-top: 1px solid #e6e6e6; border-bottom: 1px solid #e6e6e6; background-color: #f4f5f9; }
+.tbl-ltype1 th.first { border-left: 1px solid #e6e6e6; }
+.tbl-ltype1 th.last { border-right: 1px solid #e6e6e6; }
+.tbl-ltype1 td { border-bottom: 1px solid #e6e6e6; }
+.tbl-ltype1 .td-orderer .tel { display: block; font-size: 10px; font-family: Tahoma; color: #999; }
+.tbl-ltype1 .btn-lg { display: inline-block; vertical-align: middle; margin-left: 5px; font-size: 0; line-height: 0; border: 1px solid #c1c6ca; }
+.tbl-ltype1 .btn-lg button { height: 20px; padding: 0 5px; line-height: 20px; font-size: 11px; letter-spacing: -1px; vertical-align: top; border: 0; background: #eff3f7; }
+.tbl-ltype1 .td-deposit strong { font-size: 14px; font-family: Arial; color: #ff2d18; font-weight: bold; }
+.bdr_hd_on th { border: 1px solid #e6e6e6;  }
+.bdr_all_on th ,.bdr_all_on td{ border: 1px solid #e6e6e6;  }
+.btns-right { position: absolute;right: 0;bottom: 10px;}
+.hd_btns  {  padding:10px 0; position:relative; }
+/* search section */
+.sec-sch .tit { min-height: 30px; padding-left: 46px; font-size: 16px; font-weight: bold; letter-spacing: -1px; color: #222; line-height: 23px; background: url("assets/backoffice/bul_sch_tit.gif") no-repeat 15px 0; }
+.sec-sch .frm-input,
+.sec-sch .frm-date,
+.sec-sch textarea { border-style: solid; border-width: 1px; border-color: #abadb3 #e2e3ea #e3e9ef #e2e3ea; }
+.sec-sch .frm-input { height: 20px; line-height: 20px; }
+.sec-sch .frm-date { overflow: hidden; vertical-align: middle; display: inline-block; height: 18px; padding: 1px; font-size: 0; line-height: 0; }
+.sec-sch .frm-date input { width: 73px; height: 18px; line-height: 18px; border: 0; }
+.sec-sch .frm-date button { width: 17px; height: 18px; border: 0; font-size: 0; line-height: 0; background: url("assets/backoffice/ico_calendar.gif") no-repeat 0 0; }
+.sec-sch .frm-date button * { visibility: hidden; }
+.sec-sch .date-lw { overflow: hidden; display: inline-block; *margin-right: 3px; vertical-align: middle; font-size: 0; line-height: 0; border: 1px solid #c1c6ca; border-left: 0; }
+.sec-sch .date-lw .btn { display: inline-block; *margin-right: -1px; font-size: 0; line-height: 0; border-left: 1px solid #c1c6ca; }
+.sec-sch .date-lw button { width: 28px; height: 18px; line-height: 18px; text-align: center; font-size: 11px; letter-spacing: -1px; border: 0; vertical-align: top; background: url("assets/backoffice/bg_date_lw.gif") repeat-x 0 0; }
+.sec-sch .date-lw .large button  { width: 45px; height: 18px; line-height: 18px; text-align: center; font-size: 11px; letter-spacing: -1px; border: 0; vertical-align: top; background: url("assets/backoffice/bg_date_lw.gif") repeat-x 0 0; }
+.sec-sch .date-lw button.first{ border-left: 0; }
+.sec-sch .date-lw button.now { color: #fff; background: url("assets/backoffice/bg_date_lw_on.gif") no-repeat 0 0; }
+.sec-sch .btn-default { display: inline-block; vertical-align: middle; font-size: 0; line-height: 0; border: 1px solid #b1c9d9; }
+.sec-sch .btn-default button { height: 20px; padding: 0 5px; line-height: 20px; color: #444; font-size: 11px; letter-spacing: -1px; vertical-align: top; border: 0; background-color: #e3eef6; }
+.sec-sch .btn-prdsch { display: inline-block; vertical-align: middle; font-size: 0; line-height: 0; border: 1px solid #4584eb; }
+.sec-sch .btn-prdsch button { height: 20px; padding: 0 5px; line-height: 20px; color: #444; font-size: 11px; letter-spacing: -1px; vertical-align: top; border: 0; background-color: #f5f8fa; }
+.sec-sch .btn-clear { display: inline-block; vertical-align: middle; font-size: 0; line-height: 0; border: 1px solid #c1c6ca;}
+.sec-sch .btn-clear button { height: 20px; padding: 0 5px; line-height: 20px; font-size: 11px; letter-spacing: -1px; vertical-align: top; border: 0; background: url("assets/backoffice/bg_date_lw.gif") repeat-x 0 0; }
+.sec-sch .doption { text-align: right; }
+.sec-sch .doption button { height: 31px; padding-left: 18px; padding-right: 5px; line-height: 31px; border: 0; background: url("assets/backoffice/bul_sch_dopt.gif") no-repeat 0 50%; }
+.sec-sch .btn-sch { text-align: center; }
+.sec-sch .btn-sch .btn { display: inline-block; vertical-align: middle; font-size: 0; line-height: 0; border: 1px solid #007607; }
+.sec-sch .btn-sch .btn button { width: 110px; height: 30px; font-weight: bold; color: #fff; letter-spacing: -1px; text-align: center; line-height: 30px; vertical-align: top; border: 0; background: #0eb118; }
+.sec-sch .btn-sch .btn_reset button { width: 110px; height: 33px; font-weight: bold;  letter-spacing: -1px; text-align: center; line-height: 30px; vertical-align: top; color:#666; border: 1px solid #c1c6ca !important; background: #ecf1f5; }
+.btn-sch .btn_excel button { width: 110px; height: 33px; font-weight: bold;  letter-spacing: -1px; text-align: center; line-height: 30px; vertical-align: top; border:1px solid #2463E2 ; background:#4685EB;  color:#fff; }
+
+.btn-sch .bt_blue  button  , .btn-sch   a{ display:block; width: 120px; height: 24px; font-weight: bold; color: #fff; letter-spacing: -1px; text-align: center; line-height: 24px; vertical-align: top; border: 1px solid #2463E2; background: #4685EB;}
+/* btit */
+.btit { height: 21px; padding-left: 23px; font-size: 16px; line-height: 21px; font-weight: bold; color: #222; letter-spacing: -1px; background: url("assets/backoffice/bul_bar_h5_0045c3.gif") no-repeat 0 50%; }
+.btn-lg  { display: inline-block; vertical-align: middle; margin-left: 5px; font-size: 0; line-height: 0; border: 1px solid #c1c6ca; }
+.btn-g  { display: inline-block; vertical-align: middle; margin-left: 5px; font-size: 0; line-height: 0; border: 1px solid #838BA2; }
+.btn-lg button ,.btn-lg a { height: 20px; padding: 0 5px; line-height: 20px; font-size: 11px; letter-spacing: -1px; vertical-align: top; border: 0; background: #eff3f7; }
+.btn-lg a  { display:block; }
+.btn-g button { color: #FFF;background: #838BA2 url("assets/backoffice/h33_gra_g.gif") repeat-x 0 0;}
+
+.lbl_radio { margin-right:20px; }
+.btn button.smt, .btn a.smt{
+	height: 33px;
+	padding: 0 33px;
+	line-height: 33px;
+	font-weight: bold;
+	letter-spacing: -1px;
+	vertical-align: top;
+	border:0;
+}
+	.mt-10 { margin-top:20px; }
+
+
+	/* size */
+.btn-xs ,.btn-big ,.btn-mid ,.btn-mid-fixed ,.btn-small { padding: 10px 13px;  display:inline-block;font-weight: bold; letter-spacing: -1px; vertical-align: top; border: 0; cursor:pointer; overflow:hidden;*overflow: visible;margin:0 2px;}
+.btn-mid-fixed  { padding: 4px 13px; }
+.btn-xs {  min-width:24px; text-align:center;  padding: 3px; margin:1px 0;font-weight:normal;vertical-align: middle; font-size:11px; letter-spacing: -1px;}
+.btn-big { min-width:112px;  text-align:center; }
+ html>body .btn-big { padding-left: 0;  padding-right: 0; }
+.btn-small {  min-width:48px; text-align:center;  padding: 3px; margin:1px 0;font-weight:normal;vertical-align: middle; font-size:11px; letter-spacing: -1px;}
+ /* color */
+.b-gray  { border: 1px solid #666e85 !important;  color: #fff; background:#838ba2 url("assets/backoffice/h33_gra_g.gif") repeat-x 0 0 ; }
+.b-lightgray  { border: 1px solid #c1c6ca !important; color: #666; background:#ecf1f5; }
+.b-white  { border: 1px solid #c1c6ca !important;  color: #666; background:#f5f6fa url("assets/backoffice/ico_skin_h10.gif") no-repeat 18% 50% ; }
+.b-green {border:1px solid #007607; background:#0eb118;  color:#fff; }
+.b-blue { border:1px solid #2463E2 ; background:#4685EB;  color:#fff; }
+
+.b-lightblue { border: 1px solid #4584eb; background: #f5f8fa; color:#444;}
+.b-lightblue-base {border: 1px solid #b1c9d9; background: #e3eef6; color:#444; }
+.b-lightblue-img {  border:1px solid #C1C6CA; background: #f5f8fa url("assets/backoffice/bg_date_lw.gif") repeat-x 0 0;}
+.btn-xs +.b-blue  { font-weight: bold;letter-spacing:0;}
+
+.btn-area-center { text-align:center; position:relative; margin:20px 0 20px 0; }
+.btn-area-right { text-align:right; position:relative; margin-top:20px;  }
+.btn-area-left { text-align:left; position:relative; margin-top:10px; }
+
+.btit-area-right
+{
+	padding:8px 0 0 2px;
+	position:relative;
+    text-align: right !important;
+}
+.btit-area-left
+{
+	padding:0 0 8px 2px;
+	position:relative;
+	text-align: left !important;
+}
+
+
+.btn-area-center button,.btn-area-center span{ margin-left:5px;}
+
+.btns-left {position:absolute; top:20%; left:0; }
+.btns-left > span { margin-left:10px;}
+.btns-right {position:absolute; top:0; right:0; }
+.btns-right >  span { margin-left:10px;}
+
+/*
+	- Author :
+	- Description : layout
+*/
+
+/*
+========================================================================
+LAYOUT
+========================================================================
+*/
+body { min-width: 1100px; background: url("assets/backoffice/bg_body.gif") repeat-y 0 0; }
+body.no-bg { background: none; }
+/* hdr */
+#hdr { position: relative; height: 103px; background: url("assets/backoffice/bg_hdr.gif") repeat-x 0 0; }
+#hdr h1 { position: absolute; left: 22px; top: 0px; width: 90px; height: 32px; }
+#hdr h1 a { overflow: hidden; display: block; width: 100%; height: 100%; text-indent: -9999px; background: url("assets/backoffice/bi_hdr.gif") no-repeat 0 0; }
+#hdr.hd-china h1 a { overflow: hidden; display: block; width: 100%; height: 100%; text-indent: -9999px; background: url("assets/backoffice/bi_hdr_cn2.png") no-repeat 0 0; }
+#hdr.hd-china { position: relative; height: 103px; background: url("assets/backoffice/bg_hdr_cn.png") repeat-x 0 0; }
+#hdr.hd-china h1 { position: absolute; left: 22px; top: 0px; width: 116px; height: 32px; }
+#hdr.hd-china .elink li.log, #hdr.hd-china .elink li.log a {  background-image:none; background-color:black; color:#fff; }
+
+#hdr .elink { position: absolute; right: 13px; top: 6px; }
+#hdr .elink li,
+#hdr .elink a { float: left; }
+#hdr .elink li { display: inline; margin-left: 12px; }
+#hdr .elink a { height: 20px; line-height: 20px; color: #fff; letter-spacing: -1px; }
+#hdr .elink li.log,
+#hdr .elink li.log a { background: url("assets/backoffice/hdr_log.gif") no-repeat; }
+#hdr .elink li.log { padding-left: 1px; }
+#hdr .elink li.log a { padding-left: 5px; padding-right: 6px; font-weight: bold; background-position: right 0; }
+#gnb { position: absolute; left: 6px; top: 33px; }
+#gnb li { float: left; height: 70px; }
+#gnb li.shop { width: 65px; background: url("assets/backoffice/gnb_shop.gif") no-repeat 50% 13px; }
+#gnb li.prod { width: 65px; background: url("assets/backoffice/gnb_prd.gif") no-repeat 50% 12px; }
+#gnb li.orde { width: 69px; background: url("assets/backoffice/gnb_order.gif") no-repeat 50% 12px; }
+#gnb li.memb { width: 62px; background: url("assets/backoffice/gnb_member.gif") no-repeat 50% 10px; }
+#gnb li.comm { width: 71px; background: url("assets/backoffice/gnb_community.gif") no-repeat 50% 12px; }
+#gnb li.prom { width: 61px; background: url("assets/backoffice/gnb_promotion.gif") no-repeat 50% 11px; }
+#gnb li.desi { width: 71px; background: url("assets/backoffice/gnb_design.gif") no-repeat 50% 12px; }
+#gnb li.outs { width: 62px; background: url("assets/backoffice/gnb_outside.gif") no-repeat 50% 13px; }
+#gnb li.rese { width: 62px; background: url("assets/backoffice/gnb_reseller.gif") no-repeat 50% 13px; }
+#gnb li.cust { width: 62px; background: url("assets/backoffice/gnb_prd.gif") no-repeat 50% 13px; }
+#gnb a { display: block; height: 24px; padding-top: 46px; font-size: 11px; line-height: 14px; letter-spacing: -1px; color: #fff; text-align: center; }
+/* aside */
+#container { zoom: 1; padding-left: 209px; }
+#container:after { content: ""; display: block; clear: both; }
+#aside { z-index: 2; position: relative; left: -209px; float: left; width: 209px; margin-right: -209px; }
+#aside .tit { z-index: 2; position: relative; min-height: 52px; _height: 52px; padding-left: 21px; padding-top: 28px; border-bottom: 3px solid #333; }
+#aside .tit h2 { font-size: 0; line-height: 0; }
+#aside .tit .ctrl { position: absolute; right: 0; _right: -1px; bottom: -11px; width: 21px; height: 21px; }
+#aside .tit button { overflow: hidden; position: absolute; left: 0; top: 0; width: 100%; height: 100%; text-indent: -9999px; border: 0; background: url("assets/backoffice/lnb_ctrl.gif") no-repeat; }
+#aside .tit button.close { background-position: -21px 0; }
+#layerLnbHelp { display: none; position: absolute; left: 50%; top: 27px; width: 91px; padding: 8px 0; margin-left: -49px; text-align: center; letter-spacing: -1px; border: 3px solid #4c72d6; background-color: #fff; }
+#layerLnbHelp .edge { position: absolute; left: 50%; top: -7px; width: 8px; height: 4px; margin-left: -4px; font-size: 0; line-height: 0; background: url("assets/backoffice/lnb_ctrl_edge.gif") no-repeat 0 0; }
+/* lnb */
+#lnb { margin-top: 11px; }
+#lnb h3 { padding-left: 22px; font-size: 14px; color: #222; line-height: 34px; font-weight: bold; letter-spacing: -1px; cursor: pointer; background: url("assets/backoffice/bul_lnb_h3.gif") no-repeat 11px 50%; }
+#lnb h3 em { font-weight: normal; }
+#lnb ul { zoom: 1; position: relative; display: none; padding-bottom: 5px; background-color: #fff; }
+#lnb li { zoom: 1; position: relative; padding-left: 11px; padding-right: 11px; font-size: 0; line-height: 0; }
+#lnb li a { display: block; height: 21px; line-height: 21px; padding-left: 22px; padding-top: 1px; letter-spacing: -1px; font-size: 11px; color: #4a72da; background: url("assets/backoffice/bg_lnb_link.gif") repeat-x 0 0; }
+#lnb li a:hover { text-decoration: underline; }
+#lnb li.last a { background: none; }
+#lnb li.now { background: #6086e8 url("assets/backoffice/bg_lnb_li.gif") repeat-x 0 0; }
+#lnb li.now a { color: #fff; }
+#lnb li.now .edge { position: absolute; right: -11px; top: 1px; width: 11px; height: 21px; font-size: 0; line-height: 0; background: url("assets/backoffice/lnb_edge.gif") no-repeat 0 0; }
+#lnb .item-show { zoom: 1; margin-bottom: -1px; border-top: 1px solid #e6e6e6; border-bottom: 1px solid #e6e6e6; }
+#lnb .item-show h3 { background:#fff url("assets/backoffice/bul_lnb_h3_open.gif") no-repeat 11px 50%;  }
+#lnb .item-show ul { display: block; }
+/* asideCtrl */
+#asideCtrl { position: absolute; left: 0; top: 70px; width: 21px; height: 21px; }
+#asideCtrl button { overflow: hidden; position: absolute; left: 0; top: 0; width: 100%; height: 100%; text-indent: -9999px; border: 0; background: url("assets/backoffice/aside_ctrl.gif") no-repeat; }
+#asideCtrl button.close { background-position: -21px 0; }
+/* content */
+#contentWrap { position: relative; float: left; width: 100%; }
+#content { padding-left: 21px; padding-bottom: 50px; }
+.page-hd { min-height: 61px; _height: 61px; padding-top: 19px; padding-left: 20px; border-bottom: 1px solid #e6e6e6; }
+.page-hd dd { line-height: 18px; font-size: 11px; letter-spacing: -1px; color: #999; }
+.page-hd h2 { font-weight: bold; font-size: 18px; color: #0045c3; letter-spacing: -1px; }
+.page-cont { padding-top: 30px; margin-left: 10px; margin-right: 30px; }
+
+
+.hd_new {padding:7px 0; overflow:visible!important;}
+.hd_new .btit-left {position:absolute; top:0; left:0;}
+.hd_new .btit-right {position:absolute; bottom:5px; right:0;}
+.hd_new .btit_bt {width:100px; height:30px; line-height:30px; position:absolute; top:-25px; left:130px; display:block;}
+
+[hidden] { display: none !important; }
+#search-categories { display: flex; gap: 4px; }
+#search-categories select { flex: 1 1 0; min-width: 0; max-width: 132px; }
+#table_basic_dictionary .word-categories { padding: 0 4px; }
+.word-categories select { display: block; box-sizing: border-box; width: 100%; margin: 0 0 4px; }
+.word-translations label { display: flex; align-items: center; justify-content: center; gap: 4px; margin: 2px 0; }
+.word-translations img { width: 20px; height: 16px; object-fit: contain; }
+.word-translations input { box-sizing: border-box; width: 80%; min-width: 0; }
+.word-actions button { margin: 2px 1px; cursor: pointer; }
+#glodic-add { width: min(440px, 90vw); padding: 18px; }
+#glodic-add h3 { margin: 0 0 12px; }
+#glodic-add .word-categories { display: flex; gap: 4px; }
+#glodic-add .glodic-add-actions { margin-top: 12px; text-align: center; }
+</style>
+</head>
+<body>
+		<div id="hdr">
+		<h1><a href="#">make</a></h1>
+		<ul class="elink">
+			<li><a href="#">1:1문의관리</a></li>
+			<li class="log"><a href="#">로그아웃</a></li>
+		</ul>
+		<ul id="gnb">
+			<li class="shop"><a href="#">관리자 관리</a></li>
+			<li class="memb"><a href="#">회원 관리</a></li>
+			<li class="comm"><a href="#">게시판 관리</a></li>
+			<li class="prod"><a href="#">서비스 관리</a></li>
+			<li class="orde"><a href="#">매출 통계</a></li>
+			<li class="orde"><a href="#">정산 관리</a></li>
+			<li class="shop"><a href="#">메일/SMS</a></li>
+            <li class="prom"><a href="#">로그분석</a></li>
+			<li class="rese"><a href="#">리셀러</a></li>
+			<li class="cust"><a href="#">서비스대행</a></li>
+			<li class="cust"><a href="#">IP차단관리</a></li>
+			<li class="cust"><a href="#">서버관리</a></li>
+		</ul>
+	</div><!-- #hdr -->
+	<hr>
+	<div id="container">
+		<div id="aside">
+	<div class="tit">
+		<h2 style="font-size:25px;font-weight: bold;padding:15px;color:black;">서버 관리</h2>
+		<div class="ctrl">
+			<button type="button">메뉴 펼침/닫힘</button>
+			<div id="layerLnbHelp">
+				<p></p>
+				<span class="edge"></span>
+			</div>
+		</div>
+	</div><!-- .tit -->
+	<div id="lnb">
+		<div class="item item-show">
+			<h3>번역 관리</h3>
+			<ul>
+				<li><a href="#">Language 관리</a><span class="edge"></span></li>
+				<li><a href="#">글로딕사전 관리</a><span class="edge"></span></li>
+				<li><a href="#">사전 관리</a><span class="edge"></span></li>
+			</ul>
+		</div>
+		<div class="item item-show">
+			<h3>서비스 세팅서버 관리</h3>
+			<ul>
+				<li><a href="#">서비스 세팅서버 관리</a><span class="edge"></span></li>
+			</ul>
+		</div>
+		<div class="item item-show">
+			<h3>만료된 상점 관리</h3>
+			<ul>
+				<li><a href="#">만료된 상점 관리</a><span class="edge"></span></li>
+			</ul>
+		</div>
+		<div class="item item-show">
+			<h3>배송비 관리</h3>
+			<ul>
+				<li><a href="#">몰테일 배송비 관리</a><span class="edge"></span></li>
+				<!-- <li><a href="#">한진 원클릭 배송비 관리</a><span class="edge"></span></li> -->
+			</ul>
+		</div>
+		<div class="item item-show">
+			<h3>모니터링 관리</h3>
+			<ul>
+				<li><a href="#">okdgg 연동 모니터</a><span class="edge"></span></li>
+				<li><a href="#">결제완료실패 모니터</a><span class="edge"></span></li>
+				<li><a href="#">상점 주문연동 API 체크</a><span class="edge"></span></li>
+			</ul>
+		</div>
+		<div class="item item-show">
+			<h3>기타 관리</h3>
+			<ul>
+				<li><a href="#">서버 부하 관리</a><span class="edge"></span></li>
+                <li><a href="#">DB 마이그레이션</a><span class="edge"></span></li>
+								<li><a href="#">시퀀스 관리</a><span class="edge"></span></li>
+				<li><a href="#">방화벽 차단 관리</a><span class="edge"></span></li>
+				<li><a href="#">관리자 메뉴 관리</a><span class="edge"></span></li>
+				<li><a href="#">데이터 변환</a><span class="edge"></span></li>
+							</ul>
+		</div>
+	</div><!-- #lnb -->
+</div><!--  #aside -->
+<hr>
+<style type="text/css">
+	#tmp-exchangerate-table{ display:none;}
+	.highlight { background:#FCFFE0; }
+	#overlay_layer { display: none; position:fixed; width:100%; height:100%; top:0; left:0; background:white; z-index:10; opacity:0.3; filter:alpha(opacity=30);  }
+	#overlay_layer img { position:fixed; top:50%; left:50%;width: 30px; }
+	.status_W {background:#FCFFE0;}
+	.status_C {background:#FFF0FF;}
+	.status_D {background:#f3f3f3;}
+</style>
+<div id="contentWrap">
+	<div id="asideCtrl"><button type="button">메뉴영역 펼침/닫힘</button></div>
+	<div id="content">
+		<div class="page-hd">
+			<dl class="loc-nav">
+				<dt class="blind">현재 페이지</dt>
+				<dd>서버 관리 &gt; 번역 관리 &gt;</dd>
+			</dl>
+			<h2>글로딕단어 관리</h2>
+		</div><!-- .page-hd -->
+
+		<div class="page-cont">
+			<div id="receiveList" style="width:100%;">
+				<div class="sec-sch">
+					<form method="get" class="middle-forms" name="frm" id="glodic-search">
+					<input type="hidden" name="mode" value="search">
+					<h3 class="tit">검색</h3>
+					<div class="tbl tbl-ftype1">
+						<table summary="상정ID, 상점명, 상점URL, 사업자번호">
+							<caption>서비스 통합 검색</caption>
+							<colgroup>
+								<col width="120">
+								<col width="*">
+								<col width="120">
+								<col width="*">
+								<col width="120">
+								<col width="*">
+							</colgroup>
+							<tbody>
+								<tr>
+									<th scope="row"><div class="txt-l">검색어</div></th>
+									<td>
+										<div class="txt-l">
+											<select name="search_field">
+												<option value="code">코드</option>
+												<option value="title">텍스트</option>
+
+											</select>
+											<input name="keyword" class="frm-input" type="text" value="">
+										</div>
+									</td>
+									<th scope="row"><div class="txt-l">카테고리</div></th>
+									<td>
+										<div class="txt-l">
+											<span id="search-categories"></span>
+										</div>
+									</td>
+									<th scope="row"><div class="txt-l">상태</div></th>
+									<td>
+										<div class="txt-l">
+											<input type="radio" name="sync_status" checked="" value="all"> 전체 &nbsp;
+											<input type="radio" name="sync_status" value="Y"> 배포완료 &nbsp;
+											<input type="radio" name="sync_status" value="W"> 배포대기 &nbsp;
+											<input type="radio" name="sync_status" value="C"> 삭제대기 &nbsp;
+											<input type="radio" name="sync_status" value="D"> 삭제완료 &nbsp;
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div style="margin-top:15px;">
+					</div>
+					<div class="btn-sch">
+						<span class="btn"><button type="submit">검색</button></span> &nbsp; <span class="btn"><button type="button" id="glodic-reset">검색 초기화</button></span>
+					</div>
+					</form>
+				</div><!-- .sec-sch -->
+
+				<div class="list-w">
+					<div class="hd">
+						<h3 class="btit">글로딕 목록</h3>
+						<div class="in">
+							<p>검색 결과 : <strong id="glodic-count">0</strong>개</p>
+						</div>
+					</div>
+			<div class="tbl tbl-ltype1">
+				<form name="basic_dictionary_list_frm" id="basic_dictionary_list_frm" method="post">
+					<input type="hidden" name="basic_dictionary_no" value="">
+					<input type="hidden" name="mode" value="">
+				</form>
+						<table summary="" id="table_basic_dictionary">
+							<caption></caption>
+							<colgroup>
+								<col width="2%">
+								<col width="5%">
+								<col width="10%">
+								<col width="14%">
+								<col width="*">
+								<col width="12%">
+								<col width="10%">
+								<col width="10%">
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="first" scope="col"><div class="txt-c"></div></th>
+									<th scope="col"><div class="txt-c">번호</div></th>
+									<th scope="col"><div class="txt-c">코드</div></th>
+									<th scope="col"><div class="txt-c">카테고리</div></th>
+									<th scope="col"><div class="txt-c">텍스트</div></th>
+									<th scope="col"><div class="txt-c">등록/수정일</div></th>
+									<th scope="col"><div class="txt-c">배포일</div></th>
+									<th class="last" scope="col">관리</th>
+							</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+						<div>
+							<div class="ls-ctrl">
+								<dl class="lc">
+									<dd>
+										<button type="button" class="btn-big b-green" id="glodic-sync">상점 서버 Sync</button>
+										<button type="button" class="btn-big b-green" id="glodic-new">추가</button>
+										<button type="button" class="btn-big b-gray" id="glodic-log">Sync 로그</button>
+									</dd>
+								</dl>
+							</div>
+						</div>
+						<form name="sform" method="post">
+							<input type="hidden" name="mode" value="set_server">
+							<input type="hidden" name="server_list_no">
+						</form>
+					</div><!-- .tbl-ltype1 -->
+					<div class="paging" aria-label="페이지 이동"></div>				</div>
+			</div>
+		</div>
+	</div><!-- #content -->
+</div><!-- #contentWrap -->
+<div id="overlay_layer"><img alt="loading" src="assets/backoffice/loading.gif" id="loading"></div>
+
+
+</div><!-- #container -->
+
+
+
+<template id="glodic-categories">
+  <select name="major" aria-label="대분류"></select>
+  <select name="minor" aria-label="중분류"></select>
+</template>
+<template id="glodic-word">
+  <tr>
+    <td><div class="txt-c"><input type="checkbox"></div></td>
+    <td><div class="txt-c" data-field="id"></div></td>
+    <td><div class="txt-c" data-field="code"></div></td>
+    <td><div class="txt-c word-categories"></div></td>
+    <td><div class="txt-c word-translations"></div></td>
+    <td><div class="txt-c" data-field="updated"></div></td>
+    <td><div class="txt-c" data-field="deployed"></div></td>
+    <td><div class="txt-c word-actions">
+      <button type="button" class="btn-xs b-lightgray" data-action="edit">수정</button>
+      <button type="button" class="btn-xs b-lightgray" data-action="delete">삭제</button>
+      <button type="button" class="btn-xs b-lightgray" data-action="sync">동기화</button>
+    </div></td>
+  </tr>
+</template>
+<dialog id="glodic-add" aria-labelledby="glodic-add-title">
+  <h3 id="glodic-add-title">글로딕단어 추가</h3>
+  <div class="word-categories"></div>
+  <div class="word-translations"></div>
+  <div class="glodic-add-actions">
+    <button type="button" id="glodic-add-save" class="btn-big b-green">저장</button>
+    <button type="button" id="glodic-add-close" class="btn-big b-gray">닫기</button>
+  </div>
+</dialog>
+<script id="glodic-data" type="application/json">{"categories":[["색상","기본 색상"],["색상","톤·수식어 색상"],["색상","배색·조합 색상"],["색상","색상+패턴·소재"],["색상","색상+사이즈·옵션 복합"],["색상","색상 옵션명(라벨)"],["사이즈·핏","의류 사이즈"],["사이즈·핏","신발 사이즈"],["사이즈·핏","인치·허리 사이즈"],["사이즈·핏","호수(반지·주얼리·화장품)"],["사이즈·핏","핏"],["사이즈·핏","신체 치수·측정"],["사이즈·핏","사이즈 옵션명(라벨)"],["기장·소매","기장"],["기장·소매","소매"],["소재·원단","섬유·원단"],["소재·원단","혼용률·혼방"],["소재·원단","가죽·모피"],["소재·원단","원단 가공·기능"],["소재·원단","금속·보석·주얼리 소재"],["패턴·디테일","패턴·무늬"],["패턴·디테일","넥라인·카라"],["패턴·디테일","디테일·부자재"],["의류","상의"],["의류","하의"],["의류","원피스·스커트"],["의류","아우터"],["의류","언더웨어·이너·홈웨어"],["의류","정장·수트"],["의류","스포츠·수영·아웃도어"],["의류","임부·수유·유아동 의류"],["의류","의류 일반·세트"],["의류","소재·디테일+아이템 복합"],["신발","신발"],["가방·잡화","가방"],["가방·잡화","주얼리·액세서리"],["가방·잡화","헤어액세서리·가발"],["가방·잡화","모자·양말·기타 잡화"],["뷰티","스킨케어"],["뷰티","메이크업"],["뷰티","클렌징"],["뷰티","바디·헤어·네일"],["뷰티","성분·효능"],["뷰티","피부타입·용도"],["뷰티","뷰티 일반"],["용량·수량·단위","용량·구성(본품/리필/1+1)"],["용량·수량·단위","단위"],["용량·수량·단위","수량·세트"],["스타일·시즌·대상","스타일·룩"],["스타일·시즌·대상","시즌·계절·톤"],["스타일·시즌·대상","성별·연령·대상"],["스타일·시즌·대상","이미지·형용사"],["쇼핑몰 운영","주문·결제"],["쇼핑몰 운영","배송"],["쇼핑몰 운영","교환·반품·환불"],["쇼핑몰 운영","할인·쿠폰·이벤트"],["쇼핑몰 운영","상품 상태(품절·입고·예약)"],["쇼핑몰 운영","사은품·선물·포장"],["쇼핑몰 운영","고객센터·회원·안내"],["쇼핑몰 운영","옵션·선택 라벨"],["쇼핑몰 운영","동의·입력 항목"],["상품분류(기타 업종)","리빙·가구·주방"],["상품분류(기타 업종)","가전·디지털"],["상품분류(기타 업종)","출산·육아·유아동"],["상품분류(기타 업종)","식품"],["상품분류(기타 업종)","취미·도서·음반·굿즈"],["상품분류(기타 업종)","자동차·반려동물·건강·기타"],["상품분류(기타 업종)","분류 체계·상품 구분"],["기타 일반어","모티브·사물(동물·과일·자연 등)"],["기타 일반어","기타"]],"words":[[1,"색상","기본 색상","가넷","Garnet","石榴红","ガーネット","Garnet","石榴紅","ဂါးနက်ရောင်","ពណ៌ហ្គាណេត","สีโกเมน","Đỏ garnet"],[2,"색상","기본 색상","가지색","Eggplant","茄紫色","茄子紺","Ungu Terong","茄紫色","ခရမ်းသီးရောင်","ពណ៌ត្រប់","สีม่วงมะเขือ","Tím cà"],[3,"색상","기본 색상","갈색","Brown","棕色","ブラウン","Cokelat","棕色","အညိုရောင်","ពណ៌ត្នោត","สีน้ำตาล","Nâu"],[639,"색상","톤·수식어 색상","그레이시진청","Grayish Dark Denim","灰调深色牛仔","グレイッシュ濃色デニム","Denim Tua Keabu-abuan","灰調深色牛仔","မီးခိုးသန်း ဒင်နင် အရင့်","ពណ៌ដេនីមចាស់លាយប្រផេះ","สีเดนิมเข้มอมเทา","Denim đậm ánh xám"],[640,"색상","톤·수식어 색상","글로시갈색","Glossy Brown","亮光棕色","グロッシーブラウン","Cokelat Mengilap","亮光棕色","အညိုရောင် တောက်ပ","ពណ៌ត្នោតភ្លឺ","สีน้ำตาลเงา","Nâu bóng"],[641,"색상","톤·수식어 색상","글로시곤색","Glossy Navy","亮光藏青色","グロッシー紺色","Biru Dongker Mengilap","亮光深藍色","နေဗီပြာ တောက်ပ","ពណ៌ខៀវចាស់ភ្លឺ","สีกรมท่าเงา","Xanh navy bóng"],[3070,"색상","배색·조합 색상","3tone","3tone","3tone","3tone","3tone","3tone","3 ရောင်","3 ពណ៌","3 โทน","3 tông"],[3071,"색상","배색·조합 색상","검정+노랑","Black+Yellow","黑色+黄色","ブラック+イエロー","Hitam+Kuning","黑色+黃色","အနက်+အဝါ","ពណ៌ខ្មៅ+ពណ៌លឿង","สีดำ+สีเหลือง","Đen+Vàng"],[3072,"색상","배색·조합 색상","검정+베이지","Black+Beige","黑色+米色","ブラック+ベージュ","Hitam+Krem","黑色+米色","အနက်+ဝါဖျော့","ពណ៌ខ្មៅ+ពណ៌បេ","สีดำ+สีเบจ","Đen+Be"],[3863,"색상","색상+패턴·소재","(기모)네이비","(Fleece-Lined)Navy","(加绒)藏青色","(裏起毛)ネイビー","(Fleece)Biru Dongker","(加絨)深藍色","(အမွေးပါ)နေဗီပြာ","(ទ្រនាប់រោម)ពណ៌ខៀវចាស់","(บุขน)สีกรมท่า","(Lót nỉ)Xanh navy"],[3864,"색상","색상+패턴·소재","(기모)블랙","(Fleece-Lined)Black","(加绒)黑色","(裏起毛)ブラック","(Fleece)Hitam","(加絨)黑色","(အမွေးပါ)အနက်","(ទ្រនាប់រោម)ពណ៌ខ្មៅ","(บุขน)สีดำ","(Lót nỉ)Đen"],[3865,"색상","색상+패턴·소재","(기모)아이보리","(Fleece-Lined)Ivory","(加绒)象牙白","(裏起毛)アイボリー","(Fleece)Gading","(加絨)象牙白","(အမွေးပါ)ဆင်စွယ်ရောင်","(ទ្រនាប់រោម)ពណ៌ភ្លុក","(บุขน)สีงาช้าง","(Lót nỉ)Trắng ngà"],[4351,"색상","색상+사이즈·옵션 복합","(롱)블랙","(Long)Black","(长款)黑色","(ロング)ブラック","(Panjang)Hitam","(長款)黑色","(အရှည်)အနက်","(វែង)ពណ៌ខ្មៅ","(ยาว)สีดำ","(Dài)Đen"],[4352,"색상","색상+사이즈·옵션 복합","그레이 2XL","Gray 2XL","灰色 2XL","グレー 2XL","Abu-abu 2XL","灰色 2XL","မီးခိုးရောင် 2XL","ពណ៌ប្រផេះ 2XL","สีเทา 2XL","Xám 2XL"],[4353,"색상","색상+사이즈·옵션 복합","그레이 L","Gray L","灰色 L","グレー L","Abu-abu L","灰色 L","မီးခိုးရောင် L","ពណ៌ប្រផេះ L","สีเทา L","Xám L"],[4825,"색상","색상 옵션명(라벨)","리본색상","Ribbon Color","丝带颜色","リボンカラー","Warna Pita","絲帶顏色","ဖဲပြားအရောင်","ពណ៌ខ្សែបូ","สีริบบิ้น","Màu Ruy Băng"],[4826,"색상","색상 옵션명(라벨)","브라색상","Bra Color","文胸颜色","ブラカラー","Warna Bra","文胸顏色","ဘရာအရောင်","ពណ៌អាវទ្រនាប់","สีบรา","Màu Áo Ngực"],[4827,"색상","색상 옵션명(라벨)","상의색상","Top Color","上衣颜色","トップスカラー","Warna Atasan","上衣顏色","အပေါ်ဝတ်အရောင်","ពណ៌អាវ","สีท่อนบน","Màu Áo"],[4853,"사이즈·핏","의류 사이즈","0~3개월","0–3 Months","0~3个月","0~3ヶ月","0–3 Bulan","0~3個月","0–3 လ","0–3 ខែ","0–3 เดือน","0–3 Tháng"],[4854,"사이즈·핏","의류 사이즈","100","100","100","100","100","100","100","100","100","100"],[4855,"사이즈·핏","의류 사이즈","100(L)","100 (L)","100(L)","100(L)","100 (L)","100(L)","100 (L)","100 (L)","100 (L)","100 (L)"],[4992,"사이즈·핏","신발 사이즈","100mm","100mm (Kids)","100mm(童鞋)","10.0cm","100mm (Anak)","10cm(童鞋)","100mm (ကလေး)","100mm (កុមារ)","100mm (เด็ก)","100mm (Trẻ Em)"],[4993,"사이즈·핏","신발 사이즈","110mm","110mm (Kids)","110mm(童鞋)","11.0cm","110mm (Anak)","11cm(童鞋)","110mm (ကလေး)","110mm (កុមារ)","110mm (เด็ก)","110mm (Trẻ Em)"],[4994,"사이즈·핏","신발 사이즈","120mm","120mm (Kids)","120mm(童鞋)","12.0cm","120mm (Anak)","12cm(童鞋)","120mm (ကလေး)","120mm (កុមារ)","120mm (เด็ก)","120mm (Trẻ Em)"],[5085,"사이즈·핏","인치·허리 사이즈","23인치","23 inch","23英寸","23インチ","23 Inci","23吋","23 လက်မ","23 អ៊ីញ","23 นิ้ว","23 Inch"],[5086,"사이즈·핏","인치·허리 사이즈","24SIZE","24SIZE","24SIZE","24SIZE","Ukuran 24","24SIZE","ဆိုဒ် 24","ទំហំ 24","ไซซ์ 24","Size 24"],[5087,"사이즈·핏","인치·허리 사이즈","24인치","24 inch","24英寸","24インチ","24 Inci","24吋","24 လက်မ","24 អ៊ីញ","24 นิ้ว","24 Inch"],[5120,"사이즈·핏","호수(반지·주얼리·화장품)","01호","No. 01","01号","01号","No. 01","01號","နံပါတ် 01","លេខ 01","เบอร์ 01","Số 01"],[5121,"사이즈·핏","호수(반지·주얼리·화장품)","02호","No. 02","02号","02号","No. 02","02號","နံပါတ် 02","លេខ 02","เบอร์ 02","Số 02"],[5122,"사이즈·핏","호수(반지·주얼리·화장품)","03호","No. 03","03号","03号","No. 03","03號","နံပါတ် 03","លេខ 03","เบอร์ 03","Số 03"],[5191,"사이즈·핏","핏","가오리핏","Dolman Fit","蝙蝠袖版型","ドルマンフィット","Dolman Fit","蝙蝠袖版型","ဒေါ်လ်မန်းဖစ်","រាងស្លាបប្រចៀវ","ทรงค้างคาว","Dáng Cánh Dơi"],[5192,"사이즈·핏","핏","기본핏","Basic Fit","基础版型","ベーシックフィット","Basic Fit","基礎版型","အခြေခံဖစ်","រាងបេស៊ិក","ทรงเบสิก","Dáng Cơ Bản"],[5193,"사이즈·핏","핏","레귤러핏","Regular Fit","常规版型","レギュラーフィット","Regular Fit","常規版型","ပုံမှန်ဖစ်","រាងធម្មតា","ทรงปกติ","Dáng Regular"],[5241,"사이즈·핏","신체 치수·측정","가로","Width","宽","横","Lebar","寬","အနံ","ទទឹង","ความกว้าง","Chiều Rộng"],[5242,"사이즈·핏","신체 치수·측정","가슴둘레","Chest","胸围","胸囲","Lingkar Dada","胸圍","ရင်ဘတ်လုံးပတ်","រង្វង់ទ្រូង","รอบอก","Vòng Ngực"],[5243,"사이즈·핏","신체 치수·측정","귀","Ear","耳朵","耳","Telinga","耳朵","နား","ត្រចៀក","หู","Tai"],[5264,"사이즈·핏","사이즈 옵션명(라벨)","반지 사이즈","Ring Size","戒指尺寸","リングサイズ","Ukuran Cincin","戒指尺寸","လက်စွပ်ဆိုဒ်","ទំហំចិញ្ចៀន","ไซซ์แหวน","Size Nhẫn"],[5265,"사이즈·핏","사이즈 옵션명(라벨)","브라사이즈","Bra Size","文胸尺码","ブラサイズ","Ukuran Bra","文胸尺寸","ဘရာဆိုဒ်","ទំហំអាវទ្រនាប់","ไซซ์บรา","Size Áo Ngực"],[5266,"사이즈·핏","사이즈 옵션명(라벨)","사이즈","Size","尺码","サイズ","Ukuran","尺寸","ဆိုဒ်","ទំហំ","ขนาด","Kích Thước"],[5287,"기장·소매","기장","10부","Full Length","十分","十分丈","Panjang Penuh","十分","အရှည်အပြည့်","ប្រវែងពេញ","ความยาวเต็ม","Dài Full"],[5288,"기장·소매","기장","10부기장","Full Length","十分","十分丈","Panjang Penuh","十分","အရှည်အပြည့်","ប្រវែងពេញ","ความยาวเต็ม","Dài Full"],[5289,"기장·소매","기장","1부","1/10 Length","一分","一分丈","Panjang 1/10","一分","1/10 အရှည်","ប្រវែង 1/10","ความยาว 1/10","Dài 1/10"],[5416,"기장·소매","소매","5부소매","Half Length Sleeve","五分袖","五分丈袖","Lengan Setengah","五分袖","လက်တစ်ဝက်","ដៃពាក់កណ្តាល","แขนครึ่ง","Tay Lửng"],[5417,"기장·소매","소매","7부 소매","3/4 Length Sleeve","七分袖","七分丈袖","Lengan 3/4","七分袖","3/4 လက်","ដៃ 3/4","แขน 3/4","Tay 3/4"],[5418,"기장·소매","소매","7부소매","3/4 Length Sleeve","七分袖","七分丈袖","Lengan 3/4","七分袖","3/4 လက်","ដៃ 3/4","แขน 3/4","Tay 3/4"],[5475,"소재·원단","섬유·원단","EVA","EVA","EVA","EVA","EVA","EVA","EVA","EVA","EVA","EVA"],[5476,"소재·원단","섬유·원단","거즈","Gauze","纱布","ガーゼ","Kain Kasa","紗布","ဂေါ့ဇ်","ក្រណាត់មារលា","ผ้าก๊อซ","Vải Xô"],[5477,"소재·원단","섬유·원단","거즈면","Gauze Cotton","纱布棉","ガーゼ綿","Katun Kasa","紗布棉","ဂေါ့ဇ်ဝါဂွမ်း","កប្បាសមារលា","ผ้าก๊อซคอตตอน","Vải Xô Cotton"],[5622,"소재·원단","혼용률·혼방","나일론10%","Nylon 10%","尼龙10%","ナイロン10%","Nilon 10%","尼龍10%","နိုင်လွန် 10%","នីឡុង 10%","ไนลอน 10%","Nylon 10%"],[5623,"소재·원단","혼용률·혼방","나일론100%","Nylon 100%","尼龙100%","ナイロン100%","Nilon 100%","尼龍100%","နိုင်လွန် 100%","នីឡុង 100%","ไนลอน 100%","Nylon 100%"],[5624,"소재·원단","혼용률·혼방","나일론20%","Nylon 20%","尼龙20%","ナイロン20%","Nilon 20%","尼龍20%","နိုင်လွန် 20%","នីឡុង 20%","ไนลอน 20%","Nylon 20%"],[6153,"소재·원단","가죽·모피","PU가죽","PU Leather","PU皮革","PUレザー","Kulit PU","PU皮革","PU သားရေ","ស្បែក PU","หนัง PU","Da PU"],[6154,"소재·원단","가죽·모피","PVC가죽","PVC Leather","PVC皮革","PVCレザー","Kulit PVC","PVC皮革","PVC သားရေ","ស្បែក PVC","หนัง PVC","Da PVC"],[6155,"소재·원단","가죽·모피","가죽","Leather","皮革","レザー","Kulit","皮革","သားရေ","ស្បែក","หนัง","Da"],[6238,"소재·원단","원단 가공·기능","UV차단","UV Protection","防紫外线","UVカット","Anti UV","防紫外線","UV ကာကွယ်","ការពារ UV","กัน UV","Chống UV"],[6239,"소재·원단","원단 가공·기능","건조기금지","Do Not Tumble Dry","禁止烘干","乾燥機不可","Jangan Dikeringkan Mesin","禁止烘乾","အခြောက်ခံစက် မသုံးရ","កុំសម្ងួតនឹងម៉ាស៊ីន","ห้ามอบแห้ง","Không Sấy Máy"],[6240,"소재·원단","원단 가공·기능","겉기모","Brushed Surface","表面磨毛","表起毛","Permukaan Brushed","表面磨毛","အပြင်ဘက် အမွေးပွ","ផ្ទៃខាងក្រៅមានរោម","ขัดขนด้านนอก","Bề Mặt Chải Lông"],[6431,"소재·원단","금속·보석·주얼리 소재","14K","14K","14K","14K","14K","14K","14K","14K","14K","14K"],[6432,"소재·원단","금속·보석·주얼리 소재","14K 로즈골드","14K Rose Gold","14K玫瑰金","14Kローズゴールド","14K Rose Gold","14K玫瑰金","14K ရိုးစ်ဂိုး","14K មាសរ៉ូស","14K โรสโกลด์","14K Vàng Hồng"],[6433,"소재·원단","금속·보석·주얼리 소재","14K 옐로우골드","14K Yellow Gold","14K黄金","14Kイエローゴールド","14K Emas Kuning","14K黃金","14K ရွှေဝါ","14K មាសលឿង","14K เยลโลว์โกลด์","14K Vàng Vàng"],[6487,"패턴·디테일","패턴·무늬","격자","Grid","格子","格子","Grid","格子","ကွက်","ក្រឡាចត្រង្គ","ลายตาราง","Kẻ Ô"],[6488,"패턴·디테일","패턴·무늬","고방체크","Windowpane Check","窗格纹","ウィンドウペーン","Kotak Windowpane","窗格紋","ပြတင်းကွက်","ឆែកក្រឡាបង្អួច","ลายสก็อตตารางใหญ่","Caro Ô Cửa Sổ"],[6489,"패턴·디테일","패턴·무늬","그라데이션","Gradation","渐变","グラデーション","Gradasi","漸變","အရောင်ဖျော့ရင့်","ហ្គ្រាដាស្យុង","ไล่สี","Chuyển Màu"],[6550,"패턴·디테일","넥라인·카라","U넥","U-Neck","U领","Uネック","U-Neck","U領","U လည်ပင်း","ក U","คอ U","Cổ U"],[6551,"패턴·디테일","넥라인·카라","V넥","V-Neck","V领","Vネック","V-Neck","V領","V လည်ပင်း","ក V","คอวี","Cổ V"],[6552,"패턴·디테일","넥라인·카라","Y넥","Y-Neck","Y领","Yネック","Y-Neck","Y領","Y လည်ပင်း","ក Y","คอ Y","Cổ Y"],[6635,"패턴·디테일","디테일·부자재","A라인","A-Line","A字型","Aライン","A-Line","A字型","A ပုံ","រាង A","ทรง A","Dáng A"],[6636,"패턴·디테일","디테일·부자재","H라인","H-Line","H型","Hライン","H-Line","H型","H ပုံ","រាង H","ทรง H","Dáng H"],[6637,"패턴·디테일","디테일·부자재","가운데","Center","中间","中央","Tengah","中間","အလယ်","កណ្តាល","ตรงกลาง","Chính Giữa"],[6782,"의류","상의","7부티","3/4 Length Tee","七分T恤","七分丈Tシャツ","Kaos Lengan 3/4","七分T恤","3/4 လက်တီရှပ်","អាវយឺតដៃ 3/4","เสื้อยืดแขน 3/4","Áo Thun Tay 3/4"],[6783,"의류","상의","가디건","Cardigan","开衫","カーディガン","Cardigan","開衫","ကာဒီဂန်","ខាឌីហ្គែន","คาร์ดิแกน","Cardigan"],[6784,"의류","상의","가디건/니트","Cardigan/Knit","开衫/针织衫","カーディガン/ニット","Cardigan/Knit","開衫/針織衫","ကာဒီဂန်/နစ်အင်္ကျီ","ខាឌីហ្គែន/អាវនីត","คาร์ดิแกน/เสื้อไหมพรม","Cardigan/Áo Len"],[6883,"의류","하의","구제청바지","Vintage Jeans","古着牛仔裤","古着ジーンズ","Jeans Vintage","古著牛仔褲","ဗင်တေ့ဂ်ဂျင်း","ខោខូវប៊យវីនធីជ","กางเกงยีนส์วินเทจ","Quần Jeans Vintage"],[6884,"의류","하의","그레이진","Gray Jeans","灰色牛仔裤","グレージーンズ","Jeans Abu-abu","灰色牛仔褲","မီးခိုးရောင်ဂျင်း","ខោខូវប៊យពណ៌ប្រផេះ","กางเกงยีนส์สีเทา","Quần Jeans Xám"],[6885,"의류","하의","기모/모직/골덴바지","Fleece/Wool/Corduroy Pants","加绒/毛呢/灯芯绒裤","裏起毛/ウール/コーデュロイパンツ","Celana Fleece/Wol/Corduroy","加絨/毛呢/燈芯絨褲","ဖလိစ်/သိုးမွေး/ကော်ဒူရွိုင်ဘောင်းဘီ","ខោរោមក្នុង/រោមចៀម/កូឌូរ៉យ","กางเกงบุขน/ผ้าวูล/ลูกฟูก","Quần Nỉ/Len/Nhung Tăm"],[6948,"의류","원피스·스커트","나시원피스","Sleeveless Dress","无袖连衣裙","ノースリーブワンピース","Dress Tanpa Lengan","無袖洋裝","လက်မဲ့ဂါဝန်","រ៉ូបគ្មានដៃ","ชุดเดรสแขนกุด","Đầm Sát Nách"],[6949,"의류","원피스·스커트","니트스커트","Knit Skirt","针织半身裙","ニットスカート","Rok Knit","針織半身裙","နစ်စကတ်","សំពត់នីត","กระโปรงไหมพรม","Chân Váy Len"],[6950,"의류","원피스·스커트","니트원피스","Knit Dress","针织连衣裙","ニットワンピース","Dress Knit","針織洋裝","နစ်ဂါဝန်","រ៉ូបនីត","ชุดเดรสไหมพรม","Đầm Len"],[6981,"의류","아우터","겉옷","Outerwear","外套","アウター","Outerwear","外套","အပေါ်ထပ်အင်္ကျီ","អាវក្រៅ","เสื้อคลุม","Áo Khoác Ngoài"],[6982,"의류","아우터","경량패딩","Lightweight Padded Jacket","轻薄羽绒服","ライトダウン","Jaket Puffer Ringan","輕薄羽絨服","ပေါ့ပါးသောပက်ဒင်ဂျာကင်","អាវរងាប៉ោងស្រាល","เสื้อบุนวมน้ำหนักเบา","Áo Phao Siêu Nhẹ"],[6983,"의류","아우터","다운점퍼","Down Jacket","羽绒服","ダウンジャケット","Jaket Bulu Angsa","羽絨服","ငှက်မွေးဂျာကင်","អាវរងារោមសត្វ","แจ็คเก็ตขนเป็ด","Áo Phao Lông Vũ"],[7061,"의류","언더웨어·이너·홈웨어","가운","Robe","睡袍","ガウン","Jubah Mandi","睡袍","ရေချိုးဝတ်ရုံ","អាវក្រៅងូតទឹក","เสื้อคลุมอาบน้ำ","Áo Choàng Tắm"],[7062,"의류","언더웨어·이너·홈웨어","기능성속옷","Functional Underwear","功能内衣","機能性インナー","Pakaian Dalam Fungsional","功能內衣","လုပ်ဆောင်ချက်ပါအတွင်းခံ","ខោអាវទ្រនាប់មុខងារពិសេស","ชุดชั้นในฟังก์ชัน","Đồ Lót Chức Năng"],[7063,"의류","언더웨어·이너·홈웨어","내의","Thermal Underwear","保暖内衣","肌着","Pakaian Dalam Thermal","保暖內衣","အနွေးထည်အတွင်းခံ","ខោអាវទ្រនាប់កក់ក្ដៅ","ชุดชั้นในกันหนาว","Đồ Lót Giữ Nhiệt"],[7111,"의류","정장·수트","셋업","Set-Up","套装","セットアップ","Setelan","套裝","ဆက်အပ်","ឈុតសេតអាប់","เซ็ตอัพ","Set Đồ"],[7112,"의류","정장·수트","수트","Suit","西装","スーツ","Setelan Jas","西裝","ဆွတ်ဝတ်စုံ","ឈុតស៊ូត","ชุดสูท","Bộ Vest"],[7113,"의류","정장·수트","수트셔츠","Suit Shirt","西装衬衫","スーツシャツ","Kemeja Jas","西裝襯衫","ဆွတ်ရှပ်အင်္ကျီ","អាវសឺមីឈុតស៊ូត","เสื้อเชิ้ตสูท","Áo Sơ Mi Vest"],[7125,"의류","스포츠·수영·아웃도어","골프웨어","Golf Wear","高尔夫服装","ゴルフウェア","Pakaian Golf","高爾夫服裝","ဂေါက်ရိုက်ဝတ်စုံ","សម្លៀកបំពាក់វាយកូនហ្គោល","ชุดกอล์ฟ","Đồ Golf"],[7126,"의류","스포츠·수영·아웃도어","기능성반바지","Functional Shorts","功能短裤","機能性ショートパンツ","Celana Pendek Fungsional","功能短褲","လုပ်ဆောင်ချက်ပါဘောင်းဘီတို","ខោខ្លីមុខងារពិសេស","กางเกงขาสั้นฟังก์ชัน","Quần Short Chức Năng"],[7127,"의류","스포츠·수영·아웃도어","기능성점퍼","Functional Jacket","功能外套","機能性ジャケット","Jaket Fungsional","功能外套","လုပ်ဆောင်ချက်ပါဂျာကင်","អាវយ៉ាកែតមុខងារពិសេស","แจ็คเก็ตฟังก์ชัน","Áo Khoác Chức Năng"],[7162,"의류","임부·수유·유아동 의류","배냇저고리","Newborn Top","新生儿和尚服","新生児肌着","Atasan Bayi Baru Lahir","新生兒和尚服","မွေးကင်းစကလေးအင်္ကျီ","អាវទារកទើបកើត","เสื้อเด็กแรกเกิด","Áo Sơ Sinh"],[7163,"의류","임부·수유·유아동 의류","베이직수유복","Basic Nursing Wear","基础款哺乳服","ベーシック授乳服","Baju Menyusui Basic","基礎款哺乳服","အခြေခံနို့တိုက်ဝတ်စုံ","សម្លៀកបំពាក់បំបៅដោះបែបបេស៊ិក","ชุดให้นมเบสิก","Đồ Cho Con Bú Basic"],[7164,"의류","임부·수유·유아동 의류","산전산후팬티","Pre/Postnatal Panties","产前产后内裤","マタニティ・産後ショーツ","Celana Dalam Hamil/Pasca Melahirkan","產前產後內褲","ကိုယ်ဝန်ဆောင်/မီးဖွားပြီး အတွင်းခံဘောင်းဘီ","ខោទ្រនាប់មុន/ក្រោយសម្រាល","กางเกงในก่อน/หลังคลอด","Quần Lót Bầu/Sau Sinh"],[7193,"의류","의류 일반·세트","교복","School Uniform","校服","制服","Seragam Sekolah","校服","ကျောင်းဝတ်စုံ","ឯកសណ្ឋានសិស្ស","ชุดนักเรียน","Đồng Phục Học Sinh"],[7194,"의류","의류 일반·세트","남성의류","Menswear","男装","メンズウェア","Pakaian Pria","男裝","အမျိုးသားဝတ်စုံ","សម្លៀកបំពាក់បុរស","เสื้อผ้าผู้ชาย","Thời Trang Nam"],[7195,"의류","의류 일반·세트","룸&라운지웨어","Room & Loungewear","家居服","ルーム&ラウンジウェア","Baju Rumah & Loungewear","家居服","အိမ်နေ & အနားယူဝတ်စုံ","សម្លៀកបំពាក់ក្នុងបន្ទប់ & សម្រាក","ชุดอยู่บ้าน & เลานจ์แวร์","Đồ Mặc Nhà & Loungewear"],[7224,"의류","소재·디테일+아이템 복합","H스커트","H-Line Skirt","H型半身裙","Hラインスカート","Rok H-Line","H型半身裙","H-Line စကတ်","សំពត់រាង H","กระโปรงทรง H","Chân Váy Chữ H"],[7225,"의류","소재·디테일+아이템 복합","거즈후드","Gauze Hooded","纱布连帽","ガーゼフード","Hoodie Kain Kasa","紗布連帽","ဂွမ်းပါး ဟူဒီ","អាវហូដក្រណាត់ស្តើង","เสื้อฮู้ดผ้าก๊อซ","Áo Hoodie Vải Xô"],[7226,"의류","소재·디테일+아이템 복합","골드버튼가디건","Gold Button Cardigan","金扣开衫","ゴールドボタンカーディガン","Cardigan Kancing Emas","金扣開衫","ရွှေကြယ်သီး ကာဒီဂန်","អាវកាឌីហ្គែនឡេវមាស","คาร์ดิแกนกระดุมทอง","Áo Cardigan Cúc Vàng"],[7651,"신발","신발","10cm","10cm","10cm","10cm","10cm","10cm","10cm","10cm","10cm","10cm"],[7652,"신발","신발","1cm","1cm","1cm","1cm","1cm","1cm","1cm","1cm","1cm","1cm"],[7653,"신발","신발","2cm","2cm","2cm","2cm","2cm","2cm","2cm","2cm","2cm","2cm"],[7806,"가방·잡화","가방","가방","Bag","包","バッグ","Tas","包","အိတ်","កាបូប","กระเป๋า","Túi"],[7807,"가방·잡화","가방","기저귀가방","Diaper Bag","妈咪包","マザーズバッグ","Tas Popok","媽咪包","ကလေးသေးခံအိတ်","កាបូបដាក់កន្ទបទារក","กระเป๋าใส่ผ้าอ้อม","Túi Đựng Bỉm"],[7808,"가방·잡화","가방","남성가방","Men's Bag","男士包","メンズバッグ","Tas Pria","男士包","အမျိုးသားအိတ်","កាបូបបុរស","กระเป๋าผู้ชาย","Túi Nam"],[7856,"가방·잡화","주얼리·액세서리","1개(한쪽)","1 Piece (Single)","1只(单只)","1個(片耳)","1 Buah (Satu Sisi)","1只(單只)","1 ခု (တစ်ဖက်)","1 ដុំ (ម្ខាង)","1 ชิ้น (ข้างเดียว)","1 Chiếc (Một Bên)"],[7857,"가방·잡화","주얼리·액세서리","각인 문구","Engraving Text","刻字内容","刻印文字","Teks Ukiran","刻字內容","ထွင်းစာသား","អត្ថបទឆ្លាក់","ข้อความสลัก","Nội Dung Khắc"],[7858,"가방·잡화","주얼리·액세서리","각인 없음","No Engraving","不刻字","刻印なし","Tanpa Ukiran","不刻字","ထွင်းစာမပါ","មិនឆ្លាក់","ไม่สลัก","Không Khắc"],[7919,"가방·잡화","헤어액세서리·가발","가발걸이","Wig Stand","假发支架","ウィッグスタンド","Penyangga Wig","假髮支架","ဆံပင်တုစင်","ជើងទម្រសក់ពាក់","ขาตั้งวิก","Giá Đỡ Tóc Giả"],[7920,"가방·잡화","헤어액세서리·가발","가발망","Wig Cap","假发网","ウィッグネット","Jaring Wig","假髮網","ဆံပင်တုအတွင်းခံပိုက်ကွန်","សំណាញ់សក់ពាក់","ตาข่ายคลุมผม","Lưới Đội Tóc Giả"],[7921,"가방·잡화","헤어액세서리·가발","가발브러쉬","Wig Brush","假发刷","ウィッグブラシ","Sikat Wig","假髮刷","ဆံပင်တုဘရပ်ရှ်","ច្រាសសក់ពាក់","แปรงวิก","Bàn Chải Tóc Giả"],[7964,"가방·잡화","모자·양말·기타 잡화","가죽스트랩","Leather Strap","皮质肩带","レザーストラップ","Tali Kulit","皮質肩帶","သားရေကြိုး","ខ្សែស្បែក","สายหนัง","Dây Da"],[7965,"가방·잡화","모자·양말·기타 잡화","가죽줄","Leather Strap","皮质表带","レザーストラップ","Tali Kulit","皮質表帶","သားရေကြိုး","ខ្សែស្បែក","สายหนัง","Dây Da"],[7966,"가방·잡화","모자·양말·기타 잡화","곱창밴드","Scrunchie","发圈","シュシュ","Scrunchie","發圈","စခရန်ချီ ဆံပင်ကြိုး","កៅស៊ូចងសក់ក្រណាត់","ยางรัดผมโดนัท","Scrunchie"],[8025,"뷰티","스킨케어","SPF30","SPF30","SPF30","SPF30","SPF30","SPF30","SPF30","SPF30","SPF30","SPF30"],[8026,"뷰티","스킨케어","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++","SPF50+ PA++++"],[8027,"뷰티","스킨케어","각질라인","Exfoliating Line","去角质系列","角質ケアライン","Rangkaian Eksfoliasi","去角質系列","အသားသေဖယ် စီးရီး","ខ្សែផលិតផលដុសកោសិកាស្លាប់","ไลน์ผลัดเซลล์ผิว","Dòng Tẩy Tế Bào Chết"],[8154,"뷰티","메이크업","13호 아이보리","No.13 Ivory","13号 象牙白","13号 アイボリー","No.13 Gading","13號 象牙白","No.13 ဆင်စွယ်ရောင်","No.13 ពណ៌ភ្លុក","No.13 สีงาช้าง","No.13 Trắng ngà"],[8155,"뷰티","메이크업","21호 라이트베이지","No.21 Light Beige","21号 浅米色","21号 ライトベージュ","No.21 Krem Muda","21號 淺米色","No.21 ဝါဖျော့ အဖျော့","No.21 ពណ៌បេខ្ចី","No.21 สีเบจอ่อน","No.21 Be nhạt"],[8156,"뷰티","메이크업","23호 내추럴베이지","No.23 Natural Beige","23号 自然米色","23号 ナチュラルベージュ","No.23 Krem Natural","23號 自然米色","No.23 သဘာဝ ဝါဖျော့","No.23 ពណ៌បេធម្មជាតិ","No.23 สีเบจธรรมชาติ","No.23 Be Tự Nhiên"],[8223,"뷰티","클렌징","딥클렌저","Deep Cleanser","深层洁面乳","ディープクレンザー","Deep Cleanser","深層潔面乳","နက်ရှိုင်းစွာ သန့်စင်ဆေး","ផលិតផលសម្អាតជ្រៅ","ดีพคลีนเซอร์","Sữa Rửa Mặt Làm Sạch Sâu"],[8224,"뷰티","클렌징","레티놀클렌징폼","Retinol Cleansing Foam","视黄醇洁面泡沫","レチノール洗顔フォーム","Cleansing Foam Retinol","A醇潔面泡沫","ရက်တီနော မျက်နှာသစ်ဖုမ်း","ហ្វូមលាងមុខរ៉េទីណុល","โฟมล้างหน้าเรตินอล","Sữa Rửa Mặt Retinol"],[8225,"뷰티","클렌징","리무버","Remover","卸妆液","リムーバー","Remover","卸妝液","ဖယ်ရှားဆေး","ទឹកលុបគ្រឿងសម្អាង","รีมูฟเวอร์","Tẩy Trang"],[8257,"뷰티","바디·헤어·네일","네일","Nail","美甲","ネイル","Kuku","美甲","လက်သည်း","ក្រចក","เล็บ","Móng"],[8258,"뷰티","바디·헤어·네일","네일케어","Nail Care","指甲护理","ネイルケア","Perawatan Kuku","指甲護理","လက်သည်းထိန်းသိမ်း","ថែរក្សាក្រចក","ดูแลเล็บ","Chăm Sóc Móng"],[8259,"뷰티","바디·헤어·네일","넥케어","Neck Care","颈部护理","ネックケア","Perawatan Leher","頸部護理","လည်ပင်းထိန်းသိမ်း","ថែរក្សាក","ดูแลผิวลำคอ","Chăm Sóc Cổ"],[8293,"뷰티","성분·효능","PDRN","PDRN","PDRN","PDRN","PDRN","PDRN","PDRN","PDRN","PDRN","PDRN"],[8294,"뷰티","성분·효능","나이아신아마이드","Niacinamide","烟酰胺","ナイアシンアミド","Niacinamide","煙醯胺","နိုင်ယာစီနာမိုက်","នីអាស៊ីណាមីដ","ไนอาซินาไมด์","Niacinamide"],[8295,"뷰티","성분·효능","레티놀","Retinol","视黄醇","レチノール","Retinol","A醇","ရက်တီနော","រេទីណុល","เรตินอล","Retinol"],[8308,"뷰티","피부타입·용도","건성용","For Dry Skin","干性肌肤用","乾燥肌用","Untuk Kulit Kering","乾性肌膚用","အသားခြောက်အတွက်","សម្រាប់ស្បែកស្ងួត","สำหรับผิวแห้ง","Cho Da Khô"],[8309,"뷰티","피부타입·용도","건조민감성","Dry Sensitive Skin","干性敏感肌","乾燥敏感肌","Kulit Kering Sensitif","乾性敏感肌","ခြောက်သွေ့ထိခိုက်လွယ်သောအသားအရေ","ស្បែកស្ងួតងាយប្រតិកម្ម","ผิวแห้งแพ้ง่าย","Da Khô Nhạy Cảm"],[8310,"뷰티","피부타입·용도","모든피부용","For All Skin Types","适合所有肤质","全肌質用","Untuk Semua Jenis Kulit","適合所有膚質","အသားအရေအမျိုးအစားအားလုံးအတွက်","សម្រាប់គ្រប់ប្រភេទស្បែក","สำหรับทุกสภาพผิว","Cho Mọi Loại Da"],[8320,"뷰티","뷰티 일반","남성케어","Men's Care","男士护理","メンズケア","Perawatan Pria","男士護理","အမျိုးသားထိန်းသိမ်းမှု","ថែទាំបុរស","ผลิตภัณฑ์ดูแลผู้ชาย","Chăm Sóc Nam Giới"],[8321,"뷰티","뷰티 일반","단독구성","Single Item Only","单品组合","単品構成","Hanya Satuan","單品組合","တစ်ခုတည်းသာ","តែមួយមុខ","เฉพาะชิ้นเดี่ยว","Chỉ Sản Phẩm Đơn"],[8322,"뷰티","뷰티 일반","라벤더향","Lavender Scent","薰衣草香","ラベンダーの香り","Aroma Lavender","薰衣草香","လာဗင်ဒါရနံ့","ក្លិនឡាវេនឌ័រ","กลิ่นลาเวนเดอร์","Hương Lavender"],[8338,"용량·수량·단위","용량·구성(본품/리필/1+1)","1+1","1+1","1+1","1+1","1+1","1+1","1+1","1+1","1+1","1+1"],[8339,"용량·수량·단위","용량·구성(본품/리필/1+1)","1+1+1","1+1+1","1+1+1","1+1+1","1+1+1","1+1+1","1+1+1","1+1+1","1+1+1","1+1+1"],[8340,"용량·수량·단위","용량·구성(본품/리필/1+1)","1000ml","1000ml (33.8 fl oz)","1000ml","1000ml","1000ml (33.8 fl oz)","1000ml","1000ml (33.8 fl oz)","1000ml (33.8 fl oz)","1000ml (33.8 fl oz)","1000ml (33.8 fl oz)"],[8455,"용량·수량·단위","단위","1.5m","1.5m","1.5m","1.5m","1.5m","1.5m","1.5m","1.5m","1.5m","1.5m"],[8456,"용량·수량·단위","단위","1m","1m","1m","1m","1m","1m","1m","1m","1m","1m"],[8457,"용량·수량·단위","단위","2m","2m","2m","2m","2m","2m","2m","2m","2m","2m"],[8526,"용량·수량·단위","수량·세트","1+1 (동일상품)","1+1 (Same Item)","买一送一(同款)","1+1(同一商品)","1+1 (Produk Sama)","買一送一(同款)","1+1 (တူညီသောပစ္စည်း)","1+1 (ទំនិញដូចគ្នា)","1+1 (สินค้าเดียวกัน)","1+1 (Cùng Sản Phẩm)"],[8527,"용량·수량·단위","수량·세트","1+1 (색상 선택)","1+1 (Choose Colors)","买一送一(可选颜色)","1+1(カラー選択)","1+1 (Pilih Warna)","買一送一(可選顏色)","1+1 (အရောင်ရွေးချယ်ရန်)","1+1 (ជ្រើសរើសពណ៌)","1+1 (เลือกสี)","1+1 (Chọn Màu)"],[8528,"용량·수량·단위","수량·세트","100개","100 Pieces","100个","100個","100 Pcs","100個","100 ခု","100 ដុំ","100 ชิ้น","100 Cái"],[8611,"스타일·시즌·대상","스타일·룩","구제","Vintage","古着","古着","Vintage","古著","ဗင်တေ့ဂ်","វីនធីជ","วินเทจ","Vintage"],[8612,"스타일·시즌·대상","스타일·룩","내추럴","Natural","自然","ナチュラル","Natural","自然","သဘာဝ","បែបធម្មជាតិ","เนเชอรัล","Tự Nhiên"],[8613,"스타일·시즌·대상","스타일·룩","내츄럴","Natural","自然","ナチュラル","Natural","自然","သဘာဝ","បែបធម្មជាតិ","เนเชอรัล","Tự Nhiên"],[8671,"스타일·시즌·대상","시즌·계절·톤","가을","Fall","秋季","秋","Musim Gugur","秋季","ဆောင်းဦး","រដូវស្លឹកឈើជ្រុះ","ฤดูใบไม้ร่วง","Mùa Thu"],[8672,"스타일·시즌·대상","시즌·계절·톤","가을웜","Autumn Warm","暖秋","イエベ秋","Autumn Warm","暖秋","ဆောင်းဦးနွေးထွေးအသားအရောင်","សម្បុរក្តៅរដូវស្លឹកឈើជ្រុះ","ออทั่มวอร์ม","Autumn Warm"],[8673,"스타일·시즌·대상","시즌·계절·톤","간절기","Transitional Season","换季","季節の変わり目","Pergantian Musim","換季","ရာသီကူးပြောင်းချိန်","រដូវផ្លាស់ប្តូរ","ช่วงเปลี่ยนฤดู","Giao Mùa"],[8708,"스타일·시즌·대상","성별·연령·대상","0~6개월","0–6 Months","0~6个月","0~6ヶ月","0–6 Bulan","0~6個月","0–6 လ","0–6 ខែ","0–6 เดือน","0–6 Tháng"],[8709,"스타일·시즌·대상","성별·연령·대상","공용","Unisex","通用","兼用","Unisex","通用","ကျား/မ မရွေး","សម្រាប់ទាំងប្រុសស្រី","ยูนิเซ็กซ์","Unisex"],[8710,"스타일·시즌·대상","성별·연령·대상","남","Men","男","男性","Pria","男","အမျိုးသား","បុរស","ผู้ชาย","Nam"],[8752,"스타일·시즌·대상","이미지·형용사","감사","Thanks","感谢","感謝","Terima Kasih","感謝","ကျေးဇူးတင်ပါသည်","អរគុណ","ขอบคุณ","Cảm Ơn"],[8753,"스타일·시즌·대상","이미지·형용사","겹치다","Overlap","叠加","重ねる","Tumpuk","疊加","ထပ်","ត្រួតគ្នា","ซ้อน","Chồng Lớp"],[8754,"스타일·시즌·대상","이미지·형용사","경쾌한","Lively","轻快","軽快な","Ceria","輕快","လန်းဆန်း","រស់រវើក","สดใส","Năng Động"],[8833,"쇼핑몰 운영","주문·결제","가격","Price","价格","価格","Harga","價格","စျေးနှုန်း","តម្លៃ","ราคา","Giá"],[8834,"쇼핑몰 운영","주문·결제","간편결제","Easy Payment","快捷支付","簡単決済","Pembayaran Mudah","快捷支付","လွယ်ကူငွေပေးချေမှု","ការទូទាត់ងាយស្រួល","ชำระเงินง่าย","Thanh Toán Nhanh"],[8835,"쇼핑몰 운영","주문·결제","개인결재","Personal Payment","个人付款","個別決済","Pembayaran Pribadi","個人付款","ကိုယ်ပိုင်ငွေပေးချေမှု","ការទូទាត់ផ្ទាល់ខ្លួន","ชำระเงินส่วนบุคคล","Thanh Toán Cá Nhân"],[8868,"쇼핑몰 운영","배송","개인통관고유부호","Personal Customs Clearance Code","个人通关号码","個人通関固有符号","Kode Bea Cukai Pribadi","個人通關號碼","ကိုယ်ပိုင်အကောက်ခွန်ရှင်းလင်းရေးကုဒ်","លេខកូដគយផ្ទាល់ខ្លួន","รหัสศุลกากรส่วนบุคคล","Mã Thông Quan Cá Nhân"],[8869,"쇼핑몰 운영","배송","경비실보관","Leave at Security Office","放保安室","管理人室預け","Titip di Pos Satpam","放保安室","လုံခြုံရေးရုံးတွင်ထားခဲ့ရန်","ទុកនៅប៉ុស្តិ៍សន្តិសុខ","ฝากไว้ที่ป้อมยาม","Gửi Tại Phòng Bảo Vệ"],[8870,"쇼핑몰 운영","배송","국내","Domestic","国内","国内","Domestik","國內","ပြည်တွင်း","ក្នុងស្រុក","ในประเทศ","Trong Nước"],[8936,"쇼핑몰 운영","교환·반품·환불","가격표제거","Price Tag Removed","去除价签","値札除去","Label Harga Dilepas","去除價簽","ဈေးနှုန်းတံဆိပ်ဖယ်ရှားပြီး","បានដកស្លាកតម្លៃ","แกะป้ายราคาแล้ว","Đã Gỡ Tem Giá"],[8937,"쇼핑몰 운영","교환·반품·환불","고객변심","Change of Mind","个人原因","お客様都合","Berubah Pikiran","個人原因","စိတ်ပြောင်းခြင်း","ប្តូរចិត្ត","เปลี่ยนใจ","Đổi Ý"],[8938,"쇼핑몰 운영","교환·반품·환불","교환","Exchange","换货","交換","Penukaran","換貨","လဲလှယ်ခြင်း","ការប្តូរទំនិញ","เปลี่ยนสินค้า","Đổi Hàng"],[8965,"쇼핑몰 운영","할인·쿠폰·이벤트","1+1특가","1+1 Special Deal","买一送一特价","1+1特価","Promo Spesial 1+1","買一送一特價","1+1 အထူးဈေး","ការផ្តល់ជូនពិសេស 1+1","ราคาพิเศษ 1+1","Ưu Đãi Đặc Biệt 1+1"],[8966,"쇼핑몰 운영","할인·쿠폰·이벤트","10%세일","10% Off Sale","10%折扣特卖","10%OFFセール","Sale Diskon 10%","10%折扣特賣","10% လျှော့ဈေးရောင်းချ","បញ្ចុះតម្លៃ 10%","ลดราคา 10%","Sale Giảm 10%"],[8967,"쇼핑몰 운영","할인·쿠폰·이벤트","10%할인","10% Off","10%折扣","10%OFF","Diskon 10%","10%折扣","10% လျှော့","បញ្ចុះ 10%","ลด 10%","Giảm 10%"],[9059,"쇼핑몰 운영","상품 상태(품절·입고·예약)","가을신상","New Fall Arrivals","秋季新品","秋の新作","Koleksi Baru Musim Gugur","秋季新品","ဆောင်းဦးရာသီ ပစ္စည်းသစ်","ទំនិញថ្មីរដូវស្លឹកឈើជ្រុះ","สินค้าใหม่ฤดูใบไม้ร่วง","Hàng Mới Mùa Thu"],[9060,"쇼핑몰 운영","상품 상태(품절·입고·예약)","단종","Discontinued","停产","廃番","Tidak Diproduksi Lagi","停產","ထုတ်လုပ်မှု ရပ်ဆိုင်းပြီး","ឈប់ផលិត","เลิกผลิต","Ngừng Sản Xuất"],[9061,"쇼핑몰 운영","상품 상태(품절·입고·예약)","리오더진행중","Reordering","返单中","再生産中","Sedang Dipesan Ulang","返單中","ပြန်လည်မှာယူနေဆဲ","កំពុងកុម្ម៉ង់បន្ថែម","กำลังสั่งเพิ่ม","Đang Đặt Lại Hàng"],[9089,"쇼핑몰 운영","사은품·선물·포장","리본포장","Ribbon Wrapping","丝带包装","リボンラッピング","Bungkus Pita","絲帶包裝","ဖဲကြိုး ထုပ်ပိုး","វេចខ្ចប់ដោយខ្សែបូ","ห่อพร้อมโบว์","Gói Ruy Băng"],[9090,"쇼핑몰 운영","사은품·선물·포장","메시지카드","Message Card","留言卡","メッセージカード","Kartu Ucapan","留言卡","မက်ဆေ့ချ် ကတ်","កាតសារ","การ์ดข้อความ","Thiệp Lời Nhắn"],[9091,"쇼핑몰 운영","사은품·선물·포장","메시지카드 추가","Add Message Card","加购留言卡","メッセージカード追加","Tambah Kartu Ucapan","加購留言卡","မက်ဆေ့ချ် ကတ် ထည့်ရန်","បន្ថែមកាតសារ","เพิ่มการ์ดข้อความ","Thêm Thiệp Lời Nhắn"],[9124,"쇼핑몰 운영","고객센터·회원·안내","1:1문의","1:1 Inquiry","1对1咨询","1:1お問い合わせ","Pertanyaan 1:1","1對1諮詢","1:1 မေးမြန်းရန်","សំណួរ 1:1","สอบถาม 1:1","Hỏi Đáp 1:1"],[9125,"쇼핑몰 운영","고객센터·회원·안내","고객센터","Customer Service","客服中心","カスタマーセンター","Layanan Pelanggan","客服中心","ဖောက်သည် ဝန်ဆောင်မှု","សេវាអតិថិជន","ศูนย์บริการลูกค้า","Chăm Sóc Khách Hàng"],[9126,"쇼핑몰 운영","고객센터·회원·안내","공휴일휴무","Closed on Public Holidays","法定节假日休息","祝日休業","Libur di Hari Libur Nasional","法定節假日休息","အများပြည်သူ အားလပ်ရက်တွင် ပိတ်သည်","បិទនៅថ្ងៃបុណ្យជាតិ","หยุดวันนักขัตฤกษ์","Nghỉ Ngày Lễ"],[9151,"쇼핑몰 운영","옵션·선택 라벨","개별 옵션명","Individual Option Name","单独选项名","個別オプション名","Nama Opsi Individual","單獨選項名","တစ်ခုချင်း ရွေးချယ်မှု အမည်","ឈ្មោះជម្រើសដាច់ដោយឡែក","ชื่อตัวเลือกแยก","Tên Tùy Chọn Riêng"],[9152,"쇼핑몰 운영","옵션·선택 라벨","개별1","Individual 1","单独1","個別1","Individual 1","單獨1","တစ်ခုချင်း 1","ដាច់ដោយឡែក 1","แยก 1","Riêng 1"],[9153,"쇼핑몰 운영","옵션·선택 라벨","개별2","Individual 2","单独2","個別2","Individual 2","單獨2","တစ်ခုချင်း 2","ដាច់ដោយឡែក 2","แยก 2","Riêng 2"],[9267,"쇼핑몰 운영","동의·입력 항목","각인 내용 입력","Enter Engraving Text","输入刻字内容","刻印内容を入力","Masukkan Teks Ukiran","輸入刻字內容","ထွင်းမည့် စာသား ထည့်ပါ","បញ្ចូលអត្ថបទឆ្លាក់","กรอกข้อความสลัก","Nhập Nội Dung Khắc"],[9268,"쇼핑몰 운영","동의·입력 항목","개인정보 수집.이용 안내 동의","Consent to Collection and Use of Personal Information","同意收集及使用个人信息","個人情報の収集・利用への同意","Persetujuan Pengumpulan dan Penggunaan Informasi Pribadi","同意收集及使用個人資訊","ကိုယ်ရေးအချက်အလက် စုဆောင်းခြင်းနှင့် အသုံးပြုခြင်းကို သဘောတူခြင်း","យល់ព្រមលើការប្រមូល និងការប្រើប្រាស់ព័ត៌មានផ្ទាល់ខ្លួន","ยินยอมให้เก็บรวบรวมและใช้ข้อมูลส่วนบุคคล","Đồng Ý Thu Thập Và Sử Dụng Thông Tin Cá Nhân"],[9269,"쇼핑몰 운영","동의·입력 항목","국문","Korean","韩文","韓国語","Bahasa Korea","韓文","ကိုရီးယား","ភាសាកូរ៉េ","ภาษาเกาหลี","Tiếng Hàn"],[9304,"상품분류(기타 업종)","리빙·가구·주방","A4수납","Fits A4","可放A4","A4収納可","Muat A4","可放A4","A4 ဆံ့သည်","ដាក់ A4 បាន","ใส่ A4 ได้","Vừa A4"],[9305,"상품분류(기타 업종)","리빙·가구·주방","가구","Furniture","家具","家具","Furnitur","家具","ပရိဘောဂ","គ្រឿងសង្ហារិម","เฟอร์นิเจอร์","Đồ Nội Thất"],[9306,"상품분류(기타 업종)","리빙·가구·주방","거실용","For Living Room","客厅用","リビング用","Untuk Ruang Tamu","客廳用","ဧည့်ခန်းသုံး","សម្រាប់បន្ទប់ទទួលភ្ញៀវ","สำหรับห้องนั่งเล่น","Cho Phòng Khách"],[9348,"상품분류(기타 업종)","가전·디지털","110V","110V","110V","110V","110V","110V","110V","110V","110V","110V"],[9349,"상품분류(기타 업종)","가전·디지털","220V","220V","220V","220V","220V","220V","220V","220V","220V","220V"],[9350,"상품분류(기타 업종)","가전·디지털","8핀","Lightning (8-pin)","Lightning接口","Lightning","Lightning (8-pin)","Lightning接口","Lightning (8-pin)","Lightning (8-pin)","Lightning (8-pin)","Lightning (8-pin)"],[9439,"상품분류(기타 업종)","출산·육아·유아동","기저귀","Diaper","尿布","おむつ","Popok","尿布","သေးခံ","កន្ទបទារក","ผ้าอ้อม","Tã"],[9440,"상품분류(기타 업종)","출산·육아·유아동","기저귀커버","Diaper Cover","尿布罩","おむつカバー","Penutup Popok","尿布罩","သေးခံအုပ်","គម្របកន្ទប","กางเกงคลุมผ้าอ้อม","Quần Bọc Tã"],[9441,"상품분류(기타 업종)","출산·육아·유아동","모유저장팩","Breast Milk Storage Bag","储奶袋","母乳パック","Kantong Penyimpan ASI","儲奶袋","မိခင်နို့ သိုလှောင်အိတ်","ថង់ទុកទឹកដោះម្ដាយ","ถุงเก็บน้ำนมแม่","Túi Trữ Sữa Mẹ"],[9464,"상품분류(기타 업종)","식품","가공식품","Processed Food","加工食品","加工食品","Makanan Olahan","加工食品","စီမံပြုပြင်ထားသော အစားအစာ","អាហារកែច្នៃ","อาหารแปรรูป","Thực Phẩm Chế Biến"],[9465,"상품분류(기타 업종)","식품","가정용","For Home Use","家用装","家庭用","Untuk Rumah Tangga","家用裝","အိမ်သုံး","សម្រាប់ប្រើក្នុងផ្ទះ","สำหรับใช้ในบ้าน","Dùng Cho Gia Đình"],[9466,"상품분류(기타 업종)","식품","건강식품","Health Food","保健食品","健康食品","Makanan Kesehatan","保健食品","ကျန်းမာရေး အစားအစာ","អាហារសុខភាព","อาหารเพื่อสุขภาพ","Thực Phẩm Chức Năng"],[9490,"상품분류(기타 업종)","취미·도서·음반·굿즈","가요","K-Pop","韩国流行音乐","K-POP","K-Pop","韓國流行音樂","K-Pop","K-Pop","K-Pop","K-Pop"],[9491,"상품분류(기타 업종)","취미·도서·음반·굿즈","골프","Golf","高尔夫","ゴルフ","Golf","高爾夫","ဂေါက်သီး","ហ្គោល","กอล์ฟ","Golf"],[9492,"상품분류(기타 업종)","취미·도서·음반·굿즈","공연","Performance","演出","公演","Pertunjukan","演出","ဖျော်ဖြေပွဲ","ការសម្ដែង","การแสดง","Biểu Diễn"],[9545,"상품분류(기타 업종)","자동차·반려동물·건강·기타","강아지용","For Dogs","狗狗用","犬用","Untuk Anjing","狗狗用","ခွေးအတွက်","សម្រាប់ឆ្កែ","สำหรับสุนัข","Dành Cho Chó"],[9546,"상품분류(기타 업종)","자동차·반려동물·건강·기타","건강용품","Health Products","保健用品","健康用品","Produk Kesehatan","保健用品","ကျန်းမာရေး ပစ္စည်း","ផលិតផលសុខភាព","ผลิตภัณฑ์สุขภาพ","Sản Phẩm Sức Khỏe"],[9547,"상품분류(기타 업종)","자동차·반려동물·건강·기타","고양이용","For Cats","猫咪用","猫用","Untuk Kucing","貓咪用","ကြောင်အတွက်","សម្រាប់ឆ្មា","สำหรับแมว","Dành Cho Mèo"],[9571,"상품분류(기타 업종)","분류 체계·상품 구분","국내상품","Domestic Product","国内商品","国内商品","Produk Dalam Negeri","國內商品","ပြည်တွင်းထုတ်ကုန်","ផលិតផលក្នុងស្រុក","สินค้าในประเทศ","Hàng Nội Địa"],[9572,"상품분류(기타 업종)","분류 체계·상품 구분","국산","Made in Korea","韩国制造","韓国製","Buatan Korea","韓國製造","ကိုရီးယားထုတ်","ផលិតនៅកូរ៉េ","ผลิตในเกาหลี","Sản Xuất Tại Hàn Quốc"],[9573,"상품분류(기타 업종)","분류 체계·상품 구분","기타","Others","其他","その他","Lainnya","其他","အခြား","ផ្សេងៗ","อื่นๆ","Khác"],[9606,"기타 일반어","모티브·사물(동물·과일·자연 등)","감귤","Citrus","柑橘","みかん","Jeruk","柑橘","လိမ္မော်သီး","ក្រូច","ส้ม","Quýt"],[9607,"기타 일반어","모티브·사물(동물·과일·자연 등)","감자","Potato","土豆","じゃがいも","Kentang","土豆","အာလူး","ដំឡូងបារាំង","มันฝรั่ง","Khoai Tây"],[9608,"기타 일반어","모티브·사물(동물·과일·자연 등)","강아지","Puppy","小狗","子犬","Anak Anjing","小狗","ခွေးကလေး","កូនឆ្កែ","ลูกสุนัข","Cún Con"],[9746,"기타 일반어","기타","단보","Danbo","Danbo","ダンボ","Danbo","Danbo","Danbo","Danbo","Danbo","Danbo"],[9747,"기타 일반어","기타","당고","Dango","团子","団子","Dango","團子","ဒန်ဂို","ដាំងហ្គោ","ดังโงะ","Dango"],[9748,"기타 일반어","기타","동해","East Sea","东海","東海","Laut Timur","東海","အရှေ့ပင်လယ်","សមុទ្រខាងកើត","ทะเลตะวันออก","Đông Hải"]]}</script>
+<script>
+
+(() => {
+  const $ = selector => document.querySelector(selector);
+  const {categories, words} = JSON.parse($('#glodic-data').textContent);
+  const languages = Object.entries({KR:'한국어', EN:'영어', CN:'중국어 간체', JP:'일본어', ID:'인도네시아어', TW:'중국어 번체', MM:'미얀마어', KH:'캄보디아어', TH:'태국어', VN:'베트남어'});
+  const categoryMap = new Map();
+  for (const [major, minor] of categories) {
+    if (!categoryMap.has(major)) categoryMap.set(major, []);
+    categoryMap.get(major).push(minor);
+  }
+  const records = words.map(([id, major, minor, ...translations]) => ({
+    id, major, minor, code: translations[0], translations, status:'W', updated:'', deployed:''
+  }));
+  let nextId = records.at(-1).id + 1;
+  const search = $('#glodic-search');
+  const tbody = $('#table_basic_dictionary tbody');
+  const paging = $('.paging');
+  const selected = new Set();
+  const logs = [];
+  const pageSize = 10;
+  let page = 1;
+  let criteria = {};
+  const categoryTemplate = $('#glodic-categories');
+  const wordTemplate = $('#glodic-word');
+  const addDialog = $('#glodic-add');
+
+  function options(select, label, values) {
+    select.replaceChildren(new Option(label, ''), ...Array.from(values, value => new Option(value, value)));
+  }
+
+  function setupCategories(container, major = '', minor = '') {
+    const [majorSelect, minorSelect] = container.querySelectorAll('select');
+    options(majorSelect, '대분류', categoryMap.keys());
+    majorSelect.value = major;
+    function updateMinor() {
+      options(minorSelect, '중분류', categoryMap.get(majorSelect.value) ?? []);
+      minorSelect.disabled = !majorSelect.value;
+    }
+    updateMinor();
+    minorSelect.value = minor;
+    majorSelect.addEventListener('change', updateMinor);
+  }
+
+  function matches(record, filter) {
+    const {major, minor, status, keyword, field} = filter;
+    return (!major || record.major === major) &&
+      (!minor || record.minor === minor) &&
+      (!status || status === 'all' || record.status === status) &&
+      (!keyword || (field === 'code' ? [record.code] : record.translations)
+        .some(value => value.toLocaleLowerCase().includes(keyword)));
+  }
+
+  function editor(container, record) {
+    const categories = categoryTemplate.content.cloneNode(true);
+    setupCategories(categories, record.major, record.minor);
+    container.querySelector('.word-categories').replaceChildren(categories);
+    const fields = container.querySelector('.word-translations');
+    languages.forEach(([code, label], index) => {
+      const line = document.createElement('label');
+      const icon = document.createElement('img');
+      icon.src = 'assets/backoffice/lang_icon_' + code + '.gif';
+      icon.alt = label;
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.value = record.translations[index] ?? '';
+      input.setAttribute('aria-label', label);
+      line.append(icon, input);
+      fields.append(line);
+    });
+  }
+
+  function values(container) {
+    const [major, minor] = [...container.querySelectorAll('.word-categories select')].map(input => input.value);
+    const inputs = [...container.querySelectorAll('.word-translations input')];
+    const empty = inputs.find(input => !input.value.trim());
+    if (!major || !minor) {
+      alert('대분류와 중분류를 선택해주세요.');
+      return;
+    }
+    if (empty) {
+      alert(empty.getAttribute('aria-label') + ' 텍스트를 입력해주세요.');
+      empty.focus();
+      return;
+    }
+    return {major, minor, translations: inputs.map(input => input.value.trim())};
+  }
+
+  function render() {
+    const found = records.filter(record => matches(record, criteria));
+    const last = Math.max(1, Math.ceil(found.length / pageSize));
+    page = Math.min(page, last);
+    $('#glodic-count').textContent = found.length.toLocaleString('ko-KR');
+    tbody.replaceChildren();
+    for (const record of found.slice((page - 1) * pageSize, page * pageSize)) {
+      const row = wordTemplate.content.firstElementChild.cloneNode(true);
+      row.className = 'status_' + record.status;
+      const check = row.querySelector('input[type=checkbox]');
+      check.checked = selected.has(record.id);
+      check.setAttribute('aria-label', record.code + ' 선택');
+      check.addEventListener('change', () => {
+        if (check.checked) selected.add(record.id);
+        else selected.delete(record.id);
+      });
+      for (const key of ['id','code','updated','deployed']) {
+        row.querySelector('[data-field="' + key + '"]').textContent = record[key] || '-';
+      }
+      editor(row, record);
+      if (record.status === 'D') row.querySelector('.word-actions').replaceChildren();
+      else {
+        row.querySelector('[data-action=edit]').addEventListener('click', () => {
+          const edit = values(row);
+          if (!edit || !confirm('수정하시겠습니까?')) return;
+          Object.assign(record, edit, {status:'W', updated: timestamp()});
+          render();
+        });
+        row.querySelector('[data-action=delete]').addEventListener('click', () => {
+          if (!confirm('삭제하시겠습니까?')) return;
+          record.status = 'C';
+          record.updated = timestamp();
+          render();
+        });
+        const sync = row.querySelector('[data-action=sync]');
+        sync.hidden = !['W','C'].includes(record.status);
+        sync.addEventListener('click', () => syncRecords([record]));
+      }
+      tbody.append(row);
+    }
+    if (!found.length) {
+      const cell = tbody.insertRow().insertCell();
+      cell.colSpan = 8;
+      cell.className = 'txt-c';
+      cell.textContent = '검색 결과가 없습니다.';
+    }
+    paging.replaceChildren();
+    function pageLink(number, label, icon) {
+      const link = document.createElement('a');
+      link.href = '#';
+      link.setAttribute('aria-label', label);
+      if (icon) {
+        const image = document.createElement('img');
+        image.src = 'assets/backoffice/' + icon;
+        image.alt = '';
+        link.append(image);
+      } else {
+        link.textContent = number;
+      }
+      if (number === page && !icon) {
+        link.className = 'now';
+        link.setAttribute('aria-current', 'page');
+      }
+      link.addEventListener('click', event => {
+        event.preventDefault();
+        page = number;
+        render();
+      });
+      paging.append(link);
+    }
+    const start = Math.floor((page - 1) / 6) * 6 + 1;
+    if (start > 1) pageLink(start - 1, '이전 페이지');
+    for (let number = start; number <= Math.min(last, start + 5); number++) pageLink(number, number + '페이지');
+    if (page < last) {
+      pageLink(page + 1, '다음 페이지', 'cube_paging_next.gif');
+      pageLink(last, '마지막 페이지', 'cube_paging_end.gif');
+    }
+  }
+
+  function timestamp() {
+    return new Date().toLocaleString('sv-SE');
+  }
+
+  function syncRecords(items) {
+    const pending = items.filter(record => ['W','C'].includes(record.status));
+    if (!pending.length) return alert('동기화할 단어를 선택해주세요.');
+    if (!confirm('상점 서버에 반영 하시겠습니까?')) return;
+    const time = timestamp();
+    for (const record of pending) {
+      record.status = record.status === 'C' ? 'D' : 'Y';
+      record.deployed = time;
+      selected.delete(record.id);
+    }
+    logs.unshift(time + ' · ' + pending.length + '건 동기화');
+    render();
+  }
+
+  const searchCategories = $('#search-categories');
+  searchCategories.append(categoryTemplate.content.cloneNode(true));
+  setupCategories(searchCategories);
+  search.addEventListener('submit', event => {
+    event.preventDefault();
+    const form = new FormData(search);
+    criteria = {
+      major: form.get('major'), minor: form.get('minor'), status: form.get('sync_status'),
+      field: form.get('search_field'), keyword: form.get('keyword').trim().toLocaleLowerCase()
+    };
+    selected.clear();
+    page = 1;
+    render();
+  });
+  $('#glodic-reset').addEventListener('click', () => {
+    search.reset();
+    searchCategories.querySelector('select').dispatchEvent(new Event('change'));
+    search.requestSubmit();
+  });
+  $('#glodic-sync').addEventListener('click', () => syncRecords(records.filter(record => selected.has(record.id))));
+  $('#glodic-log').addEventListener('click', () => alert(logs.join('\n') || '동기화 기록이 없습니다.'));
+  $('#glodic-new').addEventListener('click', () => {
+    addDialog.querySelector('.word-translations').replaceChildren();
+    editor(addDialog, {translations:[]});
+    addDialog.showModal();
+  });
+  $('#glodic-add-close').addEventListener('click', () => addDialog.close());
+  $('#glodic-add-save').addEventListener('click', () => {
+    const entry = values(addDialog);
+    if (!entry) return;
+    const code = entry.translations[0];
+    if (records.some(record => record.code === code && record.status !== 'D')) {
+      return alert('이미 등록된 코드입니다.');
+    }
+    records.unshift({...entry, id: nextId++, code, status:'W', updated:timestamp(), deployed:''});
+    addDialog.close();
+    $('#glodic-reset').click();
+  });
+  document.querySelectorAll('#lnb h3').forEach(heading => heading.addEventListener('click', () => heading.parentElement.classList.toggle('item-show')));
+  $('#aside .ctrl button')?.addEventListener('click', event => {
+    const expanded = event.currentTarget.classList.toggle('close');
+    document.querySelectorAll('#lnb .item').forEach(item => item.classList.toggle('item-show', expanded));
+  });
+  $('#asideCtrl button').addEventListener('click', event => {
+    const closed = event.currentTarget.classList.toggle('close');
+    $('#aside').hidden = closed;
+    $('#container').style.paddingLeft = closed ? '0' : '';
+    document.body.classList.toggle('no-bg', closed);
+  });
+  document.addEventListener('click', event => {
+    if (event.target.closest('a[href="#"]')) event.preventDefault();
+  });
+  render();
+})();
+</script>
+</body></html>
