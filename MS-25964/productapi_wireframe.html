@@ -4880,6 +4880,7 @@ input[type=text] {
 </dialog>
 <script>
 (function behavior(products) {
+  for (const form of document.forms) form.reset();
   const details = document.querySelector('#exclusion-details');
   const enabled = document.querySelector('#exclusion-on');
   const sync = () => { details.hidden = !enabled.checked; };
@@ -5253,7 +5254,6 @@ input[type=text] {
     '100002': [['（一）服装', '裤子', '']],
     '100003': [['대분류테스트(수정테스트)', '中等级别', '子类别']]
   };
-  const storageKey = 'ms25964-wireframe-settings-v1';
   const mainItems = [...baseItems.querySelectorAll('input[type="checkbox"]')];
 
   function readSettings() {
@@ -5271,41 +5271,6 @@ input[type=text] {
       baseItems: [...baseItems.querySelectorAll('input[name]:checked')].map(input => input.name),
       deletedCodes: [...deletedProductCodes]
     };
-  }
-
-  function restoreSettings(settings) {
-    if (settings.version !== 1) return;
-    enabled.checked = Boolean(settings.exclusionEnabled);
-    document.querySelector('[name="product-exclusion"][value="off"]').checked = !enabled.checked;
-    document.querySelector('[name="exclusion-mode"][value="' + (settings.mode === 'exclude' ? 'exclude' : 'include') + '"]').checked = true;
-    linkageOn.checked = Boolean(settings.linkageEnabled);
-    document.querySelector('[name="product-linkage"][value="off"]').checked = !linkageOn.checked;
-    for (const code of settings.deletedCodes ?? []) deletedProductCodes.add(code);
-    for (const [index, value] of (settings.baseChecks ?? []).entries()) {
-      if (mainItems[index]) mainItems[index].checked = Boolean(value);
-    }
-    for (const category of settings.categories ?? []) {
-      if (!Array.isArray(category) || category.length !== 3) continue;
-      const entry = [...category];
-      groups[0].entries.push(entry);
-      selected.add(entry);
-    }
-    for (const entry of products) {
-      if ((settings.excludedCodes ?? []).includes(entry[0]) && !deletedProductCodes.has(entry[0])) selected.add(entry);
-    }
-    for (const group of settings.groups ?? []) {
-      groupForm.reset();
-      groupName.value = group.name;
-      editorProducts = new Set(products.filter(entry => group.codes.includes(entry[0]) && !deletedProductCodes.has(entry[0])));
-      if (!editorProducts.size) continue;
-      const items = new Map(group.items);
-      for (const input of matrix.querySelectorAll('input[name]')) input.checked = items.get(input.name) === input.value;
-      groupForm.dispatchEvent(new Event('submit', { cancelable: true }));
-    }
-    sync();
-    syncLinkage();
-    render(groups[0]);
-    render(groups[1]);
   }
 
   function categoryMatches(category, path) {
@@ -5326,15 +5291,6 @@ input[type=text] {
 
 
   let savedSettings = readSettings();
-  try {
-    const stored = JSON.parse(localStorage.getItem(storageKey) || 'null');
-    if (stored?.version === 1) {
-      restoreSettings(stored);
-      savedSettings = readSettings();
-    }
-  } catch {
-    alert('저장된 설정을 불러오지 못했습니다. 현재 설정을 확인해 주세요.');
-  }
 
   function refreshLookup(kind) {
     const scenario = new URLSearchParams(location.search).get('lookup');
@@ -5399,12 +5355,6 @@ input[type=text] {
         '숨김 처리된 상품은 관리자와 쇼핑몰에 표시되지 않으며, 상품정보 자동 갱신이 중단됩니다. 저장하시겠습니까?'].join('\n'))) return;
     }
 
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(current));
-    } catch {
-      alert('설정을 저장하지 못했습니다. 브라우저의 로컬 저장 허용 여부를 확인한 후 다시 시도해 주세요.');
-      return;
-    }
     savedSettings = current;
     alert('설정이 저장되었습니다.');
   };
@@ -5420,6 +5370,14 @@ input[type=text] {
       alert('선택한 상품의 1회 연동을 확인했습니다.');
     };
   }
+
+  window.addEventListener('pageshow', event => {
+    if (event.persisted) return;
+    for (const form of document.forms) form.reset();
+    sync();
+    syncLinkage();
+    savedSettings = readSettings();
+  });
 
   const apiStatus = document.querySelectorAll('input[name="config[makeshop_api][status]"]');
   for (const input of apiStatus) {
