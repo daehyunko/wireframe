@@ -4893,6 +4893,7 @@ input[type=text] {
     { area: document.querySelector('#getProductList'), entries: products, title: '상품 조회', product: true }
   ];
   const selected = new Set();
+  const deletedProductCodes = new Set();
 
   function render(group, entries = selected) {
     const body = group.area.querySelector('tbody');
@@ -4938,9 +4939,11 @@ input[type=text] {
     const levels = [large, middle, small];
     const key = levels.map(level => level.value).join('/');
     if (!categoryEntries.has(key)) {
-      const entry = levels.map(level => level.value ? level.selectedOptions[0].textContent : '');
+      const names = levels.map(level => level.value ? level.selectedOptions[0].textContent : '');
+      const existing = categoryGroup.entries.find(entry => entry.every((name, index) => name === names[index]));
+      const entry = existing ?? names;
       categoryEntries.set(key, entry);
-      categoryGroup.entries.push(entry);
+      if (!existing) categoryGroup.entries.push(entry);
     }
     selected.add(categoryEntries.get(key));
     render(categoryGroup);
@@ -4958,6 +4961,7 @@ input[type=text] {
         return;
       }
       if (!group.product) {
+        refreshLookup('category');
         large.value = '';
         populateCategory(middle);
         populateCategory(small);
@@ -5044,6 +5048,8 @@ input[type=text] {
   }
 
   function openProductPicker(available = products, current = selected, onRegister = saveExcludedProducts) {
+    refreshLookup('product');
+    available = available.filter(entry => !deletedProductCodes.has(entry[0]));
     searchForm.reset();
     right.querySelector('[name="search_type"]').selectedIndex = 0;
     right.querySelector('[name="keyword"]').value = '';
@@ -5138,9 +5144,21 @@ input[type=text] {
   // The original table uses one visible checkbox for items shared by all stores.
   matrix.addEventListener('change', event => {
     const checkbox = event.target;
-    if (!checkbox.matches('input[type="checkbox"]:not([name]):not(.check-all-col)')) return;
-    for (const mirror of checkbox.closest('label')?.querySelectorAll('input[name]') ?? []) {
-      mirror.checked = checkbox.checked;
+    if (checkbox.matches('input[type="checkbox"]:not([name]):not(.check-all-col)')) {
+      for (const mirror of checkbox.closest('label')?.querySelectorAll('input[name]') ?? []) {
+        mirror.checked = checkbox.checked;
+      }
+    }
+    if (checkbox.matches('.check-all-col')) return;
+    for (const control of matrix.querySelectorAll('.check-all-col')) {
+      const column = control.closest('th').cellIndex;
+      const inputs = [...matrix.rows].flatMap(row => {
+        const cell = row.cells[column];
+        return cell?.matches('td:not([colspan])') ? [...cell.querySelectorAll('input[name]:enabled')] : [];
+      });
+      const count = inputs.filter(input => input.checked).length;
+      control.checked = count > 0 && count === inputs.length;
+      control.indeterminate = count > 0 && count < inputs.length;
     }
   });
 
@@ -5230,57 +5248,216 @@ input[type=text] {
     groupBody.replaceChildren();
   };
 
+  const sampleMembership = {
+    '100001': [['대분류테스트(수정테스트)', '裤子', '']],
+    '100002': [['（一）服装', '裤子', '']],
+    '100003': [['대분류테스트(수정테스트)', '中等级别', '子类别']]
+  };
+  const storageKey = 'ms25964-wireframe-settings-v1';
+  const mainItems = [...baseItems.querySelectorAll('input[type="checkbox"]')];
+  const itemLabels = new Map();
+  for (const row of baseItems.rows) {
+    const label = row.cells[0]?.textContent.replace(/\s+/g, ' ').trim();
+    for (const input of row.querySelectorAll('input[name]')) {
+      const lang = input.name.match(/\[linkage_option\]\[([^\]]+)\]/)?.[1];
+      itemLabels.set(input.name, label + (lang ? ' (' + lang + ')' : ''));
+    }
+  }
+
+  function readSettings() {
+    return {
+      version: 1,
+      exclusionEnabled: enabled.checked,
+      mode: document.querySelector('[name="exclusion-mode"]:checked').value,
+      categories: groups[0].entries.filter(entry => selected.has(entry)).map(entry => [...entry]),
+      excludedCodes: products.filter(entry => selected.has(entry)).map(entry => entry[0]),
+      linkageEnabled: linkageOn.checked,
+      groups: [...linkageGroups.values()].map(group => ({
+        name: group.name, items: group.items, codes: group.products.map(entry => entry[0])
+      })),
+      baseChecks: mainItems.map(input => input.checked),
+      baseItems: [...baseItems.querySelectorAll('input[name]:checked')].map(input => input.name),
+      deletedCodes: [...deletedProductCodes]
+    };
+  }
+
+  function restoreSettings(settings) {
+    if (settings.version !== 1) return;
+    enabled.checked = Boolean(settings.exclusionEnabled);
+    document.querySelector('[name="product-exclusion"][value="off"]').checked = !enabled.checked;
+    document.querySelector('[name="exclusion-mode"][value="' + (settings.mode === 'exclude' ? 'exclude' : 'include') + '"]').checked = true;
+    linkageOn.checked = Boolean(settings.linkageEnabled);
+    document.querySelector('[name="product-linkage"][value="off"]').checked = !linkageOn.checked;
+    for (const code of settings.deletedCodes ?? []) deletedProductCodes.add(code);
+    for (const [index, value] of (settings.baseChecks ?? []).entries()) {
+      if (mainItems[index]) mainItems[index].checked = Boolean(value);
+    }
+    for (const category of settings.categories ?? []) {
+      if (!Array.isArray(category) || category.length !== 3) continue;
+      const entry = [...category];
+      groups[0].entries.push(entry);
+      selected.add(entry);
+    }
+    for (const entry of products) {
+      if ((settings.excludedCodes ?? []).includes(entry[0]) && !deletedProductCodes.has(entry[0])) selected.add(entry);
+    }
+    for (const group of settings.groups ?? []) {
+      groupForm.reset();
+      groupName.value = group.name;
+      editorProducts = new Set(products.filter(entry => group.codes.includes(entry[0]) && !deletedProductCodes.has(entry[0])));
+      if (!editorProducts.size) continue;
+      const items = new Map(group.items);
+      for (const input of matrix.querySelectorAll('input[name]')) input.checked = items.get(input.name) === input.value;
+      groupForm.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+    sync();
+    syncLinkage();
+    render(groups[0]);
+    render(groups[1]);
+  }
+
+  function categoryMatches(category, path) {
+    return category.every((name, index) => !name || name === path[index]);
+  }
+
+  function excludedCodes(settings) {
+    if (!settings.exclusionEnabled) return new Set();
+    return new Set(products.filter(([code]) => {
+      if (deletedProductCodes.has(code)) return false;
+      if (settings.excludedCodes.includes(code)) return true;
+      if (!settings.categories.length) return false;
+      const matched = (sampleMembership[code] ?? []).some(path =>
+        settings.categories.some(category => categoryMatches(category, path)));
+      return settings.mode === 'include' ? !matched : matched;
+    }).map(([code]) => code));
+  }
+
+  function effectiveItems(settings, code) {
+    const group = settings.linkageEnabled ? settings.groups.find(group => group.codes.includes(code)) : null;
+    return new Set(group ? group.items.map(([name]) => name) : settings.baseItems);
+  }
+
+  let savedSettings = readSettings();
+  try {
+    const stored = JSON.parse(localStorage.getItem(storageKey) || 'null');
+    if (stored?.version === 1) {
+      restoreSettings(stored);
+      savedSettings = readSettings();
+    }
+  } catch {
+    alert('저장된 설정을 불러오지 못했습니다. 현재 설정을 확인해 주세요.');
+  }
+
+  function refreshLookup(kind) {
+    const scenario = new URLSearchParams(location.search).get('lookup');
+    if (scenario === 'fail') {
+      alert('실시간 조회에 실패하여 저장된 목록을 노출합니다.');
+      return;
+    }
+    if (scenario !== 'deleted') return;
+    let removed = false;
+    if (kind === 'category') {
+      for (const entry of groups[0].entries) {
+        if (entry[0] !== '대분류테스트(수정테스트)') continue;
+        removed = selected.delete(entry) || removed;
+      }
+      [...large.options].find(option => option.value === '106')?.remove();
+      render(groups[0]);
+    } else {
+      const deleted = products.find(([code]) => code === '100003');
+      deletedProductCodes.add('100003');
+      removed = selected.delete(deleted);
+      for (const group of linkageGroups.values()) {
+        if (!group.products.includes(deleted)) continue;
+        group.products = group.products.filter(entry => entry !== deleted);
+        removed = true;
+      }
+      for (const [row, group] of linkageGroups) row.cells[1].textContent = group.products.length;
+      removed = editorProducts.delete(deleted) || removed;
+      render(groups[1]);
+      render(groupProducts, editorProducts);
+    }
+    if (removed) {
+      alert('국내몰에서 삭제된 카테고리 또는 상품을 연동 설정에서 제외했습니다.');
+    }
+  }
+
   document.querySelector('#saveOption_button').onclick = () => {
-    const excludedProducts = products.filter(entry => selected.has(entry));
-    const configuredCategories = groups[0].entries.filter(entry => selected.has(entry));
-    const categoryMode = document.querySelector('[name="exclusion-mode"]:checked').value;
-    const linkedSampleCategories = [
-      ['대분류테스트(수정테스트)', '裤子', ''],
-      ['（一）服装', '裤子', '']
-    ];
-    const matchesCategory = (category, linked) =>
-      category.every((name, index) => !name || name === linked[index]);
-    const excludedCategories = categoryMode === 'exclude'
-      ? configuredCategories.filter(category =>
-          linkedSampleCategories.some(linked => matchesCategory(category, linked))
-        )
-      : configuredCategories.length
-        ? linkedSampleCategories.filter(linked =>
-            !configuredCategories.some(category => matchesCategory(category, linked))
-          )
-        : [];
-    if (enabled.checked && (excludedProducts.length || excludedCategories.length)) {
+    const current = readSettings();
+    if (current.linkageEnabled && current.groups.some(group => !group.name.trim() || !group.codes.length)) {
+      alert('상품목록이 비어 있는 설정폼이 있습니다. 상품을 등록하거나 설정폼을 삭제한 후 저장해 주세요.');
+      return;
+    }
+    const previousExcluded = excludedCodes(savedSettings);
+    const currentExcluded = excludedCodes(current);
+    const newlyExcluded = products.filter(([code]) => currentExcluded.has(code) && !previousExcluded.has(code));
+    if (newlyExcluded.length) {
       const sections = [];
-      if (configuredCategories.length) {
+      if (current.categories.length) {
         sections.push(
           '설정한 카테고리',
-          ...configuredCategories.map(entry => entry.filter(Boolean).join(' > ')),
+          ...current.categories.map(entry => entry.filter(Boolean).join(' > ')),
           '',
-          categoryMode === 'include'
+          current.mode === 'include'
             ? '선택한 카테고리에 속하지 않는 기존 연동 상품은 숨김 처리됩니다.'
             : '선택한 카테고리에 속한 기존 연동 상품은 숨김 처리됩니다.',
           ''
         );
       }
+      const individual = newlyExcluded.filter(([code]) => current.excludedCodes.includes(code));
+      if (individual.length) sections.push('개별 제외 상품', ...individual.map(([code, name]) => code + ' / ' + name), '',
+        '개별 제외 상품으로 설정한 기존 연동 상품도 숨김 처리됩니다.');
+      if (!confirm(['연동 제외 설정을 저장하시겠습니까?', '', ...sections,
+        '숨김 처리된 상품은 관리자와 쇼핑몰에 표시되지 않으며, 상품정보 자동 갱신이 중단됩니다. 저장하시겠습니까?'].join('\n'))) return;
+    }
 
-      if (excludedProducts.length) {
-        sections.push(
-          '개별 제외 상품',
-          ...excludedProducts.map(([code, name]) => code + ' / ' + name),
-          ''
-        );
-      }
-      const message = [
-        '연동 제외 설정을 저장하시겠습니까?',
-        '',
-        ...sections,
-        ...(excludedProducts.length ? ['개별 제외 상품으로 설정한 기존 연동 상품도 숨김 처리됩니다.'] : []),
-        '숨김 처리된 상품은 관리자와 쇼핑몰에 표시되지 않으며, 상품정보 자동 갱신이 중단됩니다. 저장하시겠습니까?'
-      ].join('\n');
+    const disabled = savedSettings.linkageEnabled && !current.linkageEnabled;
+    const changes = [];
+    for (const [code, name] of products) {
+      if (deletedProductCodes.has(code) || currentExcluded.has(code)) continue;
+      const previousGroup = savedSettings.linkageEnabled && savedSettings.groups.find(group => group.codes.includes(code));
+      const currentGroup = current.linkageEnabled && current.groups.find(group => group.codes.includes(code));
+      const removedFromGroup = previousGroup && !currentGroup;
+      const restored = previousExcluded.has(code) && !currentExcluded.has(code);
+      const previous = effectiveItems(savedSettings, code);
+      const next = effectiveItems(current, code);
+      const changedFields = [...next].filter(field => !previous.has(field));
+      if (!removedFromGroup && !restored && !changedFields.length) continue;
+      const fields = restored ? [...next] : changedFields;
+      if (!fields.length && !removedFromGroup) continue;
+      changes.push(code + ' / ' + name + (restored ? ' (연동 복귀)' : '') +
+        '\n영향 항목: ' + (fields.length ? [...new Set(fields.map(field => itemLabels.get(field) || field))].join(', ') : '기본 상품연동항목 적용'));
+    }
+    if (disabled || changes.length) {
+      const intro = disabled
+        ? '상품별 연동항목 설정이 해제되어 기본 상품연동항목에 따라 상품정보가 연동됩니다.'
+        : '상품별 연동항목 또는 연동 제외 설정이 변경되어 아래 상품의 연동 기준이 바뀝니다.';
+      const message = [intro, '', ...changes, '',
+        '다음 자동 연동에서 위 항목이 국내몰 값으로 갱신됩니다. 상세설명이 포함된 경우 해외몰에 작성한 번역 상세가 덮어써질 수 있습니다.',
+        '진행하시겠습니까?'].join('\n');
       if (!confirm(message)) return;
     }
-    alert('설정 저장을 확인했습니다.');
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(current));
+    } catch {
+      alert('설정을 저장하지 못했습니다. 브라우저의 로컬 저장 허용 여부를 확인한 후 다시 시도해 주세요.');
+      return;
+    }
+    savedSettings = current;
+    alert('설정이 저장되었습니다.');
   };
+
+  for (const button of document.querySelectorAll('.makeshop_linkageSet .btn-small, .makeshop_linkageSet .btn-mid-fixed, .makeshop_linkageSet .btn-big')) {
+    if (button.textContent.trim() !== '단일상품 연동') continue;
+    button.onclick = () => {
+      const code = prompt('연동할 상품의 연동상품코드를 입력해 주세요.', '');
+      if (code === null) return;
+      const entry = products.find(([value]) => value === code.trim());
+      if (!entry) { alert('상품을 찾을 수 없습니다.'); return; }
+      if (excludedCodes(readSettings()).has(entry[0]) && !confirm('연동제외 상품으로 설정되어 있습니다. 상품을 연동하더라도 다음 자동연동 시 제외될 수 있습니다.\n진행하시겠습니까?')) return;
+      alert('선택한 상품의 1회 연동을 확인했습니다.');
+    };
+  }
 
   const apiStatus = document.querySelectorAll('input[name="config[makeshop_api][status]"]');
   for (const input of apiStatus) {
@@ -5294,7 +5471,7 @@ input[type=text] {
       for (const row of checkbox.closest('table').rows) {
         const cell = row.cells[header.cellIndex];
         if (matrix.contains(checkbox) && cell?.colSpan > 1) continue;
-        const input = cell?.querySelector('td input[type="checkbox"]');
+        const input = cell?.querySelector('input[type="checkbox"]');
         if (input) input.checked = checkbox.checked;
       }
     });
