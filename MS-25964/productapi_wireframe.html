@@ -5352,7 +5352,7 @@ input[type=text] {
       if (individual.length) sections.push('개별 제외 상품', ...individual.map(([code, name]) => code + ' / ' + name), '',
         '개별 제외 상품으로 설정한 기존 연동 상품도 숨김 처리됩니다.');
       if (!confirm(['연동 제외 설정을 저장하시겠습니까?', '', ...sections,
-        '숨김 처리된 상품은 관리자와 쇼핑몰에 표시되지 않으며, 상품정보 자동 갱신이 중단됩니다. 저장하시겠습니까?'].join('\n'))) return;
+        '숨김 처리된 상품은 관리자와 쇼핑몰에 표시되지 않으며, 상품정보 자동 갱신이 중단됩니다.'].join('\n'))) return;
     }
 
     savedSettings = current;
